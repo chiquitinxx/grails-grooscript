@@ -1,3 +1,5 @@
+import org.grooscript.grails.bean.GrooscriptConverter
+
 class GrailsGrooscriptGrailsPlugin {
     def version = "0.1-SNAPSHOT"
     def grailsVersion = "2.4 > *"
@@ -37,7 +39,9 @@ It converts the code to javascript and your groovy code will run in your browser
     }
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+        grooscriptConverter(GrooscriptConverter) {
+            grailsApplication = ref('grailsApplication')
+        }
     }
 
     def doWithDynamicMethods = { ctx ->
