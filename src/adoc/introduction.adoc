@@ -1,0 +1,22 @@
+
+[[_introduction]]
+= Introduction
+
+This plugin helps you generate javascript code for your pages, in Groovy.
+Will speed up your developing, working with the tools you know, like Spock, Codenarc, Gradle,...
+It has a little event module ready to work in your client.
+This plugin needs assets pipeline and cache to run, use _<asset:deferredScripts/>_ in your gsp's with grooscript tags.
+
+== Important
+
+Work with domain classes still experimental, don't use in production.
+
+Sometimes plugin needs jquery, but assets pipeline plugin fix that importing it when adding grooscript-all.js
+
+== Requisites
+
+It requires Grails 2.4+
+
+== What is new in 0.1
+
+- First version.

@@ -1,0 +1,16 @@
+= Grooscript Grails Plugin
+:grooscript-version: 0.1-SNAPSHOT
+:author: Jorge Franco
+:revnumber: {grooscript-version}
+:revremark: Grails plugin to converto groovy code to javascript in your grails application
+:imagesdir: ./images
+:toc: right
+
+:leveloffset: 1
+
+image::grooscript.png[Grooscript, 150, 150, link="http://grooscript.org",float="right"]
+image::grails.png[Grails, 150, 150, link="http://grails.org",float="right"]
+include::introduction.adoc[]
+include::grooscript.adoc[]
+include::groovyCode.adoc[]
+include::testing.adoc[]
