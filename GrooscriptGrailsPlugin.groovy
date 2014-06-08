@@ -1,6 +1,6 @@
 import org.grooscript.grails.bean.GrooscriptConverter
 
-class GrailsGrooscriptGrailsPlugin {
+class GrooscriptGrailsPlugin {
     def version = "0.1-SNAPSHOT"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [

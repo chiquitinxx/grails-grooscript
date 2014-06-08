@@ -51,7 +51,7 @@ class GrooscriptTagLibSpec extends Specification {
         0 * _
     }
 
-    static final FILE_PATH = 'GrailsGrooscriptGrailsPlugin.groovy'
+    static final FILE_PATH = 'GrooscriptGrailsPlugin.groovy'
 
     void 'test code taglib with a file'() {
         when:
