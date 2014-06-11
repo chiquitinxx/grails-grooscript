@@ -12,6 +12,10 @@ image::grooscript.png[Grooscript, 150, 150, link="http://grooscript.org",float="
 image::grails.png[Grails, 150, 150, link="http://grails.org",float="right"]
 include::introduction.adoc[]
 include::grooscript.adoc[]
+
+[[_tags]]
+= Tags
+
 include::groovyCode.adoc[]
 include::templates.adoc[]
 include::testing.adoc[]

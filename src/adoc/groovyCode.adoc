@@ -1,13 +1,13 @@
 
 [[_groovyCode]]
-= Convert groovy code
+== <grooscript:code>
 
-You can put your Groovy code in gsp's using _<grooscript:code>_ tag. You can define a file or put Groovy code inside the tag.
-If you put Groovy code inside, then maybe Grails can try use it, for example if you put '${something}'.
-If your code use other sources of your application, then that dependency will be convented too.
-A little cleanup is done in generated code, if your code
-references something that don't find in the context, then is referencing directly, we hope will be available in js context.
-The generated javascript code is inserted in the page in a _asset.script_ tag.
+You can put your Groovy code in gsp's using this tag. You can define a file or put Groovy code inside the tag.
+The groovy code is converted to javascript code and inserted in your page with a _asset.script_ tag.
+In Groovy code inside, maybe Grails can try use it, for example if you put '${something}'.
+If your code use other sources of your application, then that dependency will be converted too.
+A little cleanup is done in generated code, if your code references something that don't find in the context,
+then be sure will be available in execution time in the client side.
 
 Generated code is prepared to run with other generated code, not for be called from javascript. For example if you create a
 function that expects a groovy map, then you can have problems if a javascript object is passed. There is no problem with
