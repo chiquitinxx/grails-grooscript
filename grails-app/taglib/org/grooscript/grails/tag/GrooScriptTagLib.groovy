@@ -1,19 +1,22 @@
 package org.grooscript.grails.tag
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.grooscript.grails.Templates
 import org.grooscript.grails.bean.GrooscriptConverter
+import org.grooscript.grails.util.GrooscriptTemplate
+
 import static org.grooscript.grails.util.Util.*
 
 class GrooscriptTagLib {
 
-    //static final REMOTE_URL_SETTED = 'grooscriptRemoteUrl'
+    static final REMOTE_URL_SETTED = 'grooscriptRemoteUrl'
 
     static namespace = 'grooscript'
 
     //GrailsApplication grailsApplication
     GrooscriptConverter grooscriptConverter
-    //LinkGenerator grailsLinkGenerator
+    LinkGenerator grailsLinkGenerator
+    GrooscriptTemplate grooscriptTemplate
 
     /**
      * grooscript:code
@@ -50,46 +53,55 @@ class GrooscriptTagLib {
      * renderOnReady - optional defaults true - if template will be render onReady page event
      * listenEvents - optional - string list of events that render the page
      */
-    /*
     def template = { attrs, body ->
         def script
         if (attrs.filePath) {
             try {
                 script = new File(attrs.filePath).text
             } catch (e) {
-                Util.consoleError "GrooScriptVertxTagLib.template error reading file('${attrs.filePath}'): ${e.message}", e
+                consoleError "GrooScriptVertxTagLib.template error reading file('${attrs.filePath}'): ${e.message}", e
             }
         } else {
             script = body()
         }
         if (script) {
-            def functionName = attrs.functionName ?: 'fTemplate'+new Date().time.toString()
-            String jsCode = grooscriptConverter.toJavascript("def gsTextHtml = { data -> Builder.process { -> ${script}}}").trim()
+            def functionName = attrs.functionName ?: newTemplateName
+            String jsCode = grooscriptConverter.toJavascript("def gsTextHtml = { data -> HtmlBuilder.build { -> ${script}}}").trim()
 
-            r.require(module: 'grooscript')
-            initGrooscriptGrails()
+            //initGrooscriptGrails()
 
-            processTemplateEvents(attrs.listenEvents, functionName)
+            //processTemplateEvents(attrs.listenEvents, functionName)
 
             if (!attrs.itemSelector) {
                 out << "\n<div id='${functionName}'></div>\n"
             }
 
-            r.script() {
-                out << "\nfunction ${functionName}(templateParams) {\n"
-                out << "  ${jsCode}\n"
-                out << "  var code = gsTextHtml(templateParams);\n"
-                out << "  \$('" + (attrs.itemSelector ? attrs.itemSelector : "#${functionName}") + "').html(code.html);\n"
-                out << '};\n'
+            asset.script(type: 'text/javascript') {
+                def result = grooscriptTemplate.apply(Templates.TEMPLATE_DRAW, [
+                        functionName: functionName,
+                        jsCode: jsCode,
+                        selector: attrs.itemSelector ? attrs.itemSelector : "#${functionName}"
+                ])
                 if (!attrs.renderOnReady) {
-                    out << '$(document).ready(function() {\n'
-                    out << "  ${functionName}();\n"
-                    out << '});\n'
+                    result += grooscriptTemplate.apply(Templates.TEMPLATE_ON_READY, [functionName: functionName])
                 }
+                result
             }
         }
     }
 
+    private initGrooscriptGrails() {
+        def urlSetted = request.getAttribute(REMOTE_URL_SETTED)
+        if (!urlSetted) {
+            asset.script(type: 'text/javascript') {
+                grooscriptTemplate.apply(Templates.INIT_GROOSCRIPT_GRAILS,
+                        [remoteUrl: grailsLinkGenerator.serverBaseURL])
+            }
+            request.setAttribute(REMOTE_URL_SETTED, true)
+        }
+    }
+
+    /*
     private processTemplateEvents(listEvents, functionName) {
         if (listEvents) {
             r.require(module: 'clientEvents')

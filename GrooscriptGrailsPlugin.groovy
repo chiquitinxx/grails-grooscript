@@ -1,4 +1,6 @@
 import org.grooscript.grails.bean.GrooscriptConverter
+import org.grooscript.grails.util.GrooscriptTemplate
+import org.grooscript.grails.util.GrooscriptTemplate
 
 class GrooscriptGrailsPlugin {
     def version = "0.1-SNAPSHOT"
@@ -42,6 +44,7 @@ It converts the code to javascript and your groovy code will run in your browser
         grooscriptConverter(GrooscriptConverter) {
             grailsApplication = ref('grailsApplication')
         }
+        grooscriptTemplate(GrooscriptTemplate)
     }
 
     def doWithDynamicMethods = { ctx ->

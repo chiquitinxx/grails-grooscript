@@ -16,4 +16,9 @@ class TagsPhantomTest extends GroovyTestCase {
     void testApplicationUp() {
         assert $('title').text() == 'Grooscript plugin'
     }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    void testBasicTemplate() {
+        assert $('.tools').size() == 3
+    }
 }

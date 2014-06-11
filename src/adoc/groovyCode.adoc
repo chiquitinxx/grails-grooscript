@@ -32,5 +32,3 @@ _var item = Item();_. All goes smooth if you do all in Groovy, for example conve
 <grooscript:code>
 --
 
-Also remember you can use *conversionDaemon*, to generate your .js files from your groovy
-sources, and use in your gsp's.

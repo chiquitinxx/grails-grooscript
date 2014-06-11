@@ -24,3 +24,6 @@ class MyController {
 --
 
 All conversion done with bean or tags, use classPath 'src/groovy' by default.
+
+Also remember you can use *conversionDaemon*, to generate your .js files from your groovy
+sources, and use in your gsp's.

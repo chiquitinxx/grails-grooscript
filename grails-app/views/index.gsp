@@ -7,6 +7,7 @@
 <html>
 <head>
     <title>Grooscript plugin</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <asset:javascript src="grooscript-all.js"/>
 </head>
 
@@ -18,7 +19,18 @@
         println 'Hello world!'
     </grooscript:code>
 
-    <p>Have to render all scripts with asset:deferredScripts</p>
+    <p>To create a template use grooscript:template</p>
+    <p>List of tools:</p>
+    <!-- Must get 3 '.tools' -->
+    <grooscript:template>
+        ul {
+            ['Groovy', 'Grails', 'Grooscript'].each {
+                li ([class: "tools"], it)
+            }
+        }
+    </grooscript:template>
+
+    <p>Have to render all scripts with asset:deferredScripts at the end</p>
     <asset:deferredScripts/>
 </body>
 </html>

@@ -2,7 +2,7 @@
 :grooscript-version: 0.1-SNAPSHOT
 :author: Jorge Franco
 :revnumber: {grooscript-version}
-:revremark: Grails plugin to converto groovy code to javascript in your grails application
+:revremark: Grails plugin to convert groovy code to javascript in your grails application
 :imagesdir: ./images
 :toc: right
 
@@ -13,4 +13,5 @@ image::grails.png[Grails, 150, 150, link="http://grails.org",float="right"]
 include::introduction.adoc[]
 include::grooscript.adoc[]
 include::groovyCode.adoc[]
+include::templates.adoc[]
 include::testing.adoc[]

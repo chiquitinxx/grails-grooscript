@@ -2,3 +2,4 @@ web-app/WEB-INF
 target
 grails-grooscript-grailsPlugins.iml
 grails-grooscript.iml
+index.html

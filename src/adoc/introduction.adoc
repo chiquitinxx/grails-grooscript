@@ -9,9 +9,9 @@ This plugin needs assets pipeline and cache to run, use _<asset:deferredScripts/
 
 == Important
 
-Work with domain classes still experimental, don't use in production.
+Work with domain classes in the client still experimental, don't use in production.
 
-Sometimes plugin needs jquery, but assets pipeline plugin fix that importing it when adding grooscript-all.js
+Sometimes plugin needs jquery, be sure is imported in your head, better using asset:javascript.
 
 == Requisites
 

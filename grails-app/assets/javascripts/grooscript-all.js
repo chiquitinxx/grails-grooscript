@@ -1,5 +1,4 @@
 //Grooscript Version 0.5.1 Apache 2 License
-//= require jquery
 (function() {
     var gs = function(obj) {
         if (obj instanceof gs) return obj;

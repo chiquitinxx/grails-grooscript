@@ -29,4 +29,8 @@ class Util {
     static consoleWarning(message) {
         println "\u001B[93m${PLUGIN_MESSAGE} [WARNING] $message\u001B[0m"
     }
+
+    static String getNewTemplateName() {
+        'fTemplate' + new Date().time.toString()
+    }
 }
