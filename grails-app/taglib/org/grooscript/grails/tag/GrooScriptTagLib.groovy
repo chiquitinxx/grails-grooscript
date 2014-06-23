@@ -1,5 +1,6 @@
 package org.grooscript.grails.tag
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.grooscript.grails.Templates
 import org.grooscript.grails.bean.GrooscriptConverter
@@ -13,7 +14,7 @@ class GrooscriptTagLib {
 
     static namespace = 'grooscript'
 
-    //GrailsApplication grailsApplication
+    GrailsApplication grailsApplication
     GrooscriptConverter grooscriptConverter
     LinkGenerator grailsLinkGenerator
     GrooscriptTemplate grooscriptTemplate
@@ -90,6 +91,19 @@ class GrooscriptTagLib {
         }
     }
 
+    /**
+     * grooscript:remoteModel
+     * domainClass - REQUIRED name of the model class
+     */
+    def remoteModel = { attrs ->
+        if (validDomainClassName(attrs.domainClass)) {
+            initGrooscriptGrails()
+            out << asset.script(type: 'text/javascript') {
+                grooscriptConverter.convertRemoteDomainClass(attrs.domainClass)
+            }
+        }
+    }
+
     private initGrooscriptGrails() {
         def urlSetted = request.getAttribute(REMOTE_URL_SETTED)
         if (!urlSetted) {
@@ -123,11 +137,24 @@ class GrooscriptTagLib {
             grooscriptConverter.convertDomainClass(attrs.domainClass)
             r.require(module: 'domain')
         }
+    }*/
+
+    private validDomainClassName(String name) {
+        if (!name || !(name instanceof String)) {
+            consoleError "GrooscriptVertxTagLib have to define domainClass property as String"
+        } else {
+            if (existDomainClass(name)) {
+                return true
+            } else {
+                consoleError "Not exist domain class ${name}"
+            }
+        }
+        return false
     }
 
-    private existDomainClass(String nameClass) {
+    private boolean existDomainClass(String nameClass) {
         grailsApplication.domainClasses.find { it.fullName == nameClass || it.name == nameClass }
-    }*/
+    }
 
     /**
      * grooscript:onEvent
@@ -158,19 +185,6 @@ class GrooscriptTagLib {
         } else {
             return code
         }
-    }
-
-    private validDomainClassName(String name) {
-        if (!name || !(name instanceof String)) {
-            Util.consoleError "GrooScriptVertxTagLib.model: have to define domainClass property as a String"
-        } else {
-            if (existDomainClass(name)) {
-                return true
-            } else {
-                Util.consoleError "Not exist domain class ${name}"
-            }
-        }
-        return false
     }
 
     private initGrooscriptGrails() {

@@ -47,6 +47,10 @@ grails.project.dependency.resolution = {
         compile ":asset-pipeline:1.8.10"
         compile ":cache:1.1.6"
 
+        runtime(":hibernate4:4.3.5.4") {
+            export = false
+        }
+
         build(":tomcat:7.0.53",
                 ":release:3.0.1",
               ":rest-client-builder:1.0.3") {

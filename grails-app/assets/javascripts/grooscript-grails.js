@@ -2955,3 +2955,221 @@ function Binder() {
   return gSobject;
 };
 
+function GrooscriptGrails() {
+  var gSobject = gs.inherit(gs.baseClass,'GrooscriptGrails');
+  gSobject.clazz = { name: 'org.grooscript.grails.util.GrooscriptGrails', simpleName: 'GrooscriptGrails'};
+  gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
+  gSobject.__defineGetter__('remoteUrl', function(){ return GrooscriptGrails.remoteUrl; });
+  gSobject.__defineSetter__('remoteUrl', function(gSval){ GrooscriptGrails.remoteUrl = gSval; });
+  gSobject.__defineGetter__('controllerRemoteDomain', function(){ return GrooscriptGrails.controllerRemoteDomain; });
+  gSobject.__defineSetter__('controllerRemoteDomain', function(gSval){ GrooscriptGrails.controllerRemoteDomain = gSval; });
+  gSobject.__defineGetter__('actionRemoteDomain', function(){ return GrooscriptGrails.actionRemoteDomain; });
+  gSobject.__defineSetter__('actionRemoteDomain', function(gSval){ GrooscriptGrails.actionRemoteDomain = gSval; });
+  gSobject.__defineGetter__('GRAILS_PROPERTIES', function(){ return GrooscriptGrails.GRAILS_PROPERTIES; });
+  gSobject.__defineSetter__('GRAILS_PROPERTIES', function(gSval){ GrooscriptGrails.GRAILS_PROPERTIES = gSval; });
+  gSobject.getRemoteDomainClassProperties = function(x0) { return GrooscriptGrails.getRemoteDomainClassProperties(x0); }
+  gSobject.sendClientMessage = function(x0,x1) { return GrooscriptGrails.sendClientMessage(x0,x1); }
+  gSobject.doRemoteCall = function(x0,x1,x2,x3,x4) { return GrooscriptGrails.doRemoteCall(x0,x1,x2,x3,x4); }
+  gSobject.remoteDomainAction = function(x0,x1,x2,x3) { return GrooscriptGrails.remoteDomainAction(x0,x1,x2,x3); }
+  if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
+  
+  return gSobject;
+};
+GrooscriptGrails.getRemoteDomainClassProperties = function(remoteDomainClass) {
+  var data;
+        var result = gs.map();
+        for (data in remoteDomainClass) {
+            if ((typeof remoteDomainClass[data] !== "function") && !GrooscriptGrails.GRAILS_PROPERTIES.contains(data)) {
+                result.add(data, remoteDomainClass[data]);
+            }
+        }
+        return result;
+}
+GrooscriptGrails.sendClientMessage = function(channel, message) {
+  var sendMessage = message;
+        if (!gs.isGroovyObj(message)) {
+            sendMessage = gs.toGroovy(message);
+        }
+        grooscriptEvents.sendMessage(channel, sendMessage);
+}
+GrooscriptGrails.doRemoteCall = function(controller, action, params, onSuccess, onFailure) {
+  var url = GrooscriptGrails.remoteUrl;
+        url = url + '/' + controller;
+        if (domainAction != null) {
+            url = url + '/' + domainAction;
+        }
+        $.ajax({
+            type: "POST",
+            data: (gs.isGroovyObj(params) ? gs.toJavascript(params) : params),
+            url: url
+        }).done(function(newData) {
+            if (onSuccess !== null) {
+                var successData = gs.toGroovy(newData);
+                onSuccess(successData);
+            }
+        })
+        .fail(function(error) {
+            if (onFailure !== null) {
+                onFailure(error);
+            }
+        });
+}
+GrooscriptGrails.remoteDomainAction = function(params, onSuccess, onFailure, name) {
+  var url = GrooscriptGrails.remoteUrl + params.url;
+        var data = (gs.isGroovyObj(params.data) ? gs.toJavascript(params.data) : params.data);
+        var type = 'GET';
+        if (params.action == 'create') {
+            type = 'POST';
+        }
+        if (params.action == 'update') {
+            type = 'PUT';
+        }
+        if (params.action == 'delete') {
+            type = 'DELETE';
+        }
+        if (params.action == 'read') {
+            data = null;
+            url = url + '/' + params.data.id;
+        }
+        $.ajax({
+            type: type,
+            data: data,
+            url: url
+        }).done(function(newData) {
+            var successData = gs.toGroovy(newData, eval(name));
+            if (onSuccess !== null) {
+                onSuccess(successData);
+            }
+        })
+        .fail(function(error) {
+            if (onFailure !== null) {
+                onFailure(error);
+            }
+        });
+}
+GrooscriptGrails.remoteUrl = null;
+GrooscriptGrails.controllerRemoteDomain = "remoteDomain";
+GrooscriptGrails.actionRemoteDomain = "doAction";
+GrooscriptGrails.GRAILS_PROPERTIES = gs.list(["url" , "class" , "clazz" , "transients" , "constraints" , "mapping" , "hasMany" , "belongsTo" , "validationSkipMap" , "gormPersistentEntity" , "properties" , "gormDynamicFinders" , "all" , "domainClass" , "attached" , "validationErrorsMap" , "dirtyPropertyNames" , "errors" , "dirty" , "count"]);
+function RemoteDomain() {
+  var gSobject = gs.inherit(gs.baseClass,'RemoteDomain');
+  gSobject.clazz = { name: 'org.grooscript.grails.promise.RemoteDomain', simpleName: 'RemoteDomain'};
+  gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
+  gSobject.clazz.interfaces = [{ name: 'org.grooscript.grails.promise.GsPromise', simpleName: 'GsPromise'}, ];
+  gSobject.action = null;
+  gSobject.url = null;
+  gSobject.data = null;
+  gSobject.onSuccess = null;
+  gSobject.onFail = null;
+  gSobject.name = null;
+  gSobject.closure = function(it) {
+    var remoteData = gs.map().add("action",gSobject.action).add("url",gSobject.url).add("data",gSobject.data);
+    return gs.mc(GrooscriptGrails,"remoteDomainAction",[remoteData, gSobject.onSuccess, gSobject.onFail, gSobject.name]);
+  };
+  gSobject['then'] = function(success, fail) {
+    gSobject.onSuccess = success;
+    gSobject.onFail = fail;
+    gs.sp(gSobject.closure,"delegate",this);
+    return gs.mc(gSobject,"closure",[]);
+  }
+  if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
+  
+  return gSobject;
+};
+
+function GrooscriptGrails() {
+  var gSobject = gs.inherit(gs.baseClass,'GrooscriptGrails');
+  gSobject.clazz = { name: 'org.grooscript.grails.util.GrooscriptGrails', simpleName: 'GrooscriptGrails'};
+  gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
+  gSobject.__defineGetter__('remoteUrl', function(){ return GrooscriptGrails.remoteUrl; });
+  gSobject.__defineSetter__('remoteUrl', function(gSval){ GrooscriptGrails.remoteUrl = gSval; });
+  gSobject.__defineGetter__('controllerRemoteDomain', function(){ return GrooscriptGrails.controllerRemoteDomain; });
+  gSobject.__defineSetter__('controllerRemoteDomain', function(gSval){ GrooscriptGrails.controllerRemoteDomain = gSval; });
+  gSobject.__defineGetter__('actionRemoteDomain', function(){ return GrooscriptGrails.actionRemoteDomain; });
+  gSobject.__defineSetter__('actionRemoteDomain', function(gSval){ GrooscriptGrails.actionRemoteDomain = gSval; });
+  gSobject.__defineGetter__('GRAILS_PROPERTIES', function(){ return GrooscriptGrails.GRAILS_PROPERTIES; });
+  gSobject.__defineSetter__('GRAILS_PROPERTIES', function(gSval){ GrooscriptGrails.GRAILS_PROPERTIES = gSval; });
+  gSobject.getRemoteDomainClassProperties = function(x0) { return GrooscriptGrails.getRemoteDomainClassProperties(x0); }
+  gSobject.sendClientMessage = function(x0,x1) { return GrooscriptGrails.sendClientMessage(x0,x1); }
+  gSobject.doRemoteCall = function(x0,x1,x2,x3,x4) { return GrooscriptGrails.doRemoteCall(x0,x1,x2,x3,x4); }
+  gSobject.remoteDomainAction = function(x0,x1,x2,x3) { return GrooscriptGrails.remoteDomainAction(x0,x1,x2,x3); }
+  if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
+  
+  return gSobject;
+};
+GrooscriptGrails.getRemoteDomainClassProperties = function(remoteDomainClass) {
+  var data;
+        var result = gs.map();
+        for (data in remoteDomainClass) {
+            if ((typeof remoteDomainClass[data] !== "function") && !GrooscriptGrails.GRAILS_PROPERTIES.contains(data)) {
+                result.add(data, remoteDomainClass[data]);
+            }
+        }
+        return result;
+}
+GrooscriptGrails.sendClientMessage = function(channel, message) {
+  var sendMessage = message;
+        if (!gs.isGroovyObj(message)) {
+            sendMessage = gs.toGroovy(message);
+        }
+        grooscriptEvents.sendMessage(channel, sendMessage);
+}
+GrooscriptGrails.doRemoteCall = function(controller, action, params, onSuccess, onFailure) {
+  var url = GrooscriptGrails.remoteUrl;
+        url = url + '/' + controller;
+        if (domainAction != null) {
+            url = url + '/' + domainAction;
+        }
+        $.ajax({
+            type: "POST",
+            data: (gs.isGroovyObj(params) ? gs.toJavascript(params) : params),
+            url: url
+        }).done(function(newData) {
+            if (onSuccess !== null) {
+                var successData = gs.toGroovy(newData);
+                onSuccess(successData);
+            }
+        })
+        .fail(function(error) {
+            if (onFailure !== null) {
+                onFailure(error);
+            }
+        });
+}
+GrooscriptGrails.remoteDomainAction = function(params, onSuccess, onFailure, name) {
+  var url = GrooscriptGrails.remoteUrl + params.url;
+        var data = (gs.isGroovyObj(params.data) ? gs.toJavascript(params.data) : params.data);
+        var type = 'GET';
+        if (params.action == 'create') {
+            type = 'POST';
+        }
+        if (params.action == 'update') {
+            type = 'PUT';
+        }
+        if (params.action == 'delete') {
+            type = 'DELETE';
+        }
+        if (params.action == 'read') {
+            data = null;
+            url = url + '/' + params.data.id;
+        }
+        $.ajax({
+            type: type,
+            data: data,
+            url: url
+        }).done(function(newData) {
+            var successData = gs.toGroovy(newData, eval(name));
+            if (onSuccess !== null) {
+                onSuccess(successData);
+            }
+        })
+        .fail(function(error) {
+            if (onFailure !== null) {
+                onFailure(error);
+            }
+        });
+}
+GrooscriptGrails.remoteUrl = null;
+GrooscriptGrails.controllerRemoteDomain = "remoteDomain";
+GrooscriptGrails.actionRemoteDomain = "doAction";
+GrooscriptGrails.GRAILS_PROPERTIES = gs.list(["url" , "class" , "clazz" , "transients" , "constraints" , "mapping" , "hasMany" , "belongsTo" , "validationSkipMap" , "gormPersistentEntity" , "properties" , "gormDynamicFinders" , "all" , "domainClass" , "attached" , "validationErrorsMap" , "dirtyPropertyNames" , "errors" , "dirty" , "count"]);

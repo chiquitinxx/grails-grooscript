@@ -10,6 +10,7 @@ import org.grooscript.grails.bean.GrooscriptConverter
 import org.grooscript.grails.util.GrooscriptTemplate
 import org.grooscript.grails.util.Util
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * @author Jorge Franco
@@ -172,4 +173,31 @@ class GrooscriptTagLibSpec extends Specification {
     }
 
     */
+
+    static final FAKE_NAME = 'FAKE'
+    static final DOMAIN_CLASS_NAME = 'correctDomainClass'
+    static final DOMAIN_CLASS_NAME_WITH_PACKAGE = 'org.grooscript.correctDomainClass'
+
+    @Unroll
+    void 'test remote model with domain class'() {
+        given:
+        GrooscriptTagLib.metaClass.existDomainClass = { String name ->
+            name != FAKE_NAME
+        }
+
+        when:
+        applyTemplate("<grooscript:remoteModel domainClass='${domainClassName}'/>")
+
+        then:
+        numberTimes * assetsTagLib.script(['type':'text/javascript'], {
+            it() == JS_CODE
+        })
+        numberTimes * grooscriptConverter.convertRemoteDomainClass(domainClassName) >> JS_CODE
+
+        where:
+        domainClassName                | numberTimes
+        FAKE_NAME                      | 0
+        DOMAIN_CLASS_NAME              | 1
+        DOMAIN_CLASS_NAME_WITH_PACKAGE | 1
+    }
 }

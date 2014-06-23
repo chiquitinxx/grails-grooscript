@@ -13,6 +13,11 @@ class TagsPhantomTest extends GroovyTestCase {
     }
 
     @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    void testBookActions() {
+        assert $('#bookList li').size() > 0, 'Number of books is ' + $('#bookList li').size()
+    }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
     void testApplicationUp() {
         assert $('title').text() == 'Grooscript plugin'
     }
