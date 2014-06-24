@@ -26,4 +26,9 @@ class TagsPhantomTest extends GroovyTestCase {
     void testBasicTemplate() {
         assert $('.tools').size() == 3
     }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    void testTemplateWithEventAtStart() {
+        assert $('#lastEvent').text() == 'New event: Application started.', 'Last event is: ' + $('#lastEvent').text()
+    }
 }

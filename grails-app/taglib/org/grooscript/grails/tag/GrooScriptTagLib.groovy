@@ -25,7 +25,7 @@ class GrooscriptTagLib {
      */
     def code = { attrs, body ->
         def script
-        if (attrs.filePath) {
+        /*if (attrs.filePath) {
             try {
                 script = new File(attrs.filePath).text
                 if (body()) {
@@ -36,7 +36,8 @@ class GrooscriptTagLib {
             }
         } else {
             script = body()
-        }
+        }*/
+        script = body()
         if (script) {
             def jsCode = grooscriptConverter.toJavascript(script.toString(), attrs.options)
             asset.script(type: 'text/javascript') {
@@ -56,7 +57,7 @@ class GrooscriptTagLib {
      */
     def template = { attrs, body ->
         def script
-        if (attrs.filePath) {
+        /*if (attrs.filePath) {
             try {
                 script = new File(attrs.filePath).text
             } catch (e) {
@@ -64,14 +65,13 @@ class GrooscriptTagLib {
             }
         } else {
             script = body()
-        }
+        }*/
+        script = body()
         if (script) {
             def functionName = attrs.functionName ?: newTemplateName
             String jsCode = grooscriptConverter.toJavascript("def gsTextHtml = { data -> HtmlBuilder.build { -> ${script}}}").trim()
 
-            //initGrooscriptGrails()
-
-            //processTemplateEvents(attrs.listenEvents, functionName)
+            initGrooscriptGrails()
 
             if (!attrs.itemSelector) {
                 out << "\n<div id='${functionName}'></div>\n"
@@ -83,11 +83,13 @@ class GrooscriptTagLib {
                         jsCode: jsCode,
                         selector: attrs.itemSelector ? attrs.itemSelector : "#${functionName}"
                 ])
-                if (!attrs.renderOnReady) {
+                if (attrs['onLoad'] == null || attrs['onLoad'] == true) {
                     result += grooscriptTemplate.apply(Templates.TEMPLATE_ON_READY, [functionName: functionName])
                 }
                 result
             }
+
+            processTemplateEvents(attrs.onEvent, functionName)
         }
     }
 
@@ -115,17 +117,20 @@ class GrooscriptTagLib {
         }
     }
 
-    /*
-    private processTemplateEvents(listEvents, functionName) {
-        if (listEvents) {
-            r.require(module: 'clientEvents')
-            r.script() {
-                listEvents.each { nameEvent ->
-                    out << "\ngrooscriptEvents.onEvent('${nameEvent}', ${functionName});\n"
+    private processTemplateEvents(String onEvent, functionName) {
+        if (onEvent) {
+            def listEvents = [onEvent]
+            if (onEvent.contains(',')) {
+                listEvents = listEvents.split(',')
+            }
+            listEvents.each { nameEvent ->
+                asset.script(type: 'text/javascript') {
+                    grooscriptTemplate.apply(Templates.CLIENT_EVENT,
+                            [functionName: functionName, nameEvent: nameEvent.trim()])
                 }
             }
         }
-    }*/
+    }
 
     /**
      * grooscript:model
@@ -184,19 +189,6 @@ class GrooscriptTagLib {
             return code.substring(0, code.lastIndexOf(';'))
         } else {
             return code
-        }
-    }
-
-    private initGrooscriptGrails() {
-        def urlSetted = request.getAttribute(REMOTE_URL_SETTED)
-        if (!urlSetted) {
-            r.require(module: 'grooscriptGrails')
-            r.script() {
-                out << '$(document).ready(function() {\n'
-                out << "  GrooscriptGrails.remoteUrl = '${grailsLinkGenerator.serverBaseURL}';\n"
-                out << '});\n'
-            }
-            request.setAttribute(REMOTE_URL_SETTED, true)
         }
     }
 

@@ -33,6 +33,7 @@
     <ul id="bookList">
     </ul>
 
+    <p>To use a domain class in the server, annotated with @Resource(uri='XXX'), use grooscript:remoteModel</p>
     <grooscript:remoteModel domainClass="Book"/>
 
     <grooscript:code>
@@ -63,6 +64,18 @@
             )
         })
     </grooscript:code>
+
+    <p>Can combine templates with local events</p>
+    <div id="lastEvent"></div>
+    <grooscript:code>
+        $(document).ready({
+            gsEvents.sendMessage('newEvent', 'Application started.')
+        })
+    </grooscript:code>
+
+    <grooscript:template onLoad="false" onEvent="newEvent" itemSelector="#lastEvent">
+        p 'New event: ' + data
+    </grooscript:template>
 
     <p>Have to render all scripts with asset:deferredScripts at the end</p>
     <asset:deferredScripts/>

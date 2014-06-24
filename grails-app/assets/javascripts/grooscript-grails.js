@@ -3173,3 +3173,31 @@ GrooscriptGrails.remoteUrl = null;
 GrooscriptGrails.controllerRemoteDomain = "remoteDomain";
 GrooscriptGrails.actionRemoteDomain = "doAction";
 GrooscriptGrails.GRAILS_PROPERTIES = gs.list(["url" , "class" , "clazz" , "transients" , "constraints" , "mapping" , "hasMany" , "belongsTo" , "validationSkipMap" , "gormPersistentEntity" , "properties" , "gormDynamicFinders" , "all" , "domainClass" , "attached" , "validationErrorsMap" , "dirtyPropertyNames" , "errors" , "dirty" , "count"]);
+function ClientEventHandler() {
+  var gSobject = gs.inherit(gs.baseClass,'ClientEventHandler');
+  gSobject.clazz = { name: 'org.grooscript.grails.event.ClientEventHandler', simpleName: 'ClientEventHandler'};
+  gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
+  gSobject.clazz.interfaces = [{ name: 'org.grooscript.grails.event.EventHandler', simpleName: 'EventHandler'}, ];
+  gSobject.mapHandlers = gs.map();
+  gSobject['sendMessage'] = function(channel, data) {
+    if (gSobject.mapHandlers [ channel]) {
+      return gs.mc(gSobject.mapHandlers [ channel],"each",[function(action) {
+        return (action.delegate!=undefined?gs.applyDelegate(action,action.delegate,[data]):gs.executeCall(action, [data]));
+      }]);
+    };
+  }
+  gSobject['onEvent'] = function(channel, action) {
+    if (!gSobject.mapHandlers [ channel]) {
+      (gSobject.mapHandlers [ channel]) = gs.list([]);
+    };
+    return gs.mc((gSobject.mapHandlers [ channel]),'leftShift', gs.list([action]));
+  }
+  gSobject['close'] = function(it) {
+    return gSobject.mapHandlers = gs.map();
+  }
+  if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
+  
+  return gSobject;
+};
+
+var gsEvents = ClientEventHandler();

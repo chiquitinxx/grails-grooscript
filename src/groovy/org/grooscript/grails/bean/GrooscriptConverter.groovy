@@ -18,13 +18,15 @@ class GrooscriptConverter {
     ConversionDaemon conversionDaemon
     GrailsApplication grailsApplication
 
+    static final DEFAULT_CONVERSION_SCOPE_VARS = ['$', 'gsEvents', 'window', 'document']
+
     @Cacheable('conversions')
     String toJavascript(String groovyCode, options = null) {
         String jsCode = ''
         if (groovyCode) {
             GrooScript.clearAllOptions()
             try {
-                options = addGroovySourceClassPathIfNeeded(options)
+                options = addDefaultOptions(options)
                 options.each { key, value ->
                     GrooScript.setConversionProperty(key, value)
                 }
@@ -67,6 +69,13 @@ class GrooscriptConverter {
         convertDomainClassFile(domainClassName, true)
     }
 
+    private addDefaultOptions(options) {
+        options = options ?: [:]
+        options = addGroovySourceClassPathIfNeeded(options)
+        options = addScopeVars(options)
+        options
+    }
+
     private Closure getClosureToRunAfterDaemonConversion() {
 
         //Config option to do
@@ -82,19 +91,26 @@ class GrooscriptConverter {
         doAfterDaemon
     }
 
+    private addScopeVars(options) {
+        if (!options.mainContextScope) {
+            options.mainContextScope = []
+        }
+        options.mainContextScope.addAll DEFAULT_CONVERSION_SCOPE_VARS
+        options
+    }
+
     private addGroovySourceClassPathIfNeeded(options) {
-        def conversionOptions = options ?: [:]
-        if (!conversionOptions.classPath) {
-            conversionOptions.classPath = []
+        if (!options.classPath) {
+            options.classPath = []
         } else {
-            if (conversionOptions.classPath instanceof String) {
-                conversionOptions.classPath = [conversionOptions.classPath]
+            if (options.classPath instanceof String) {
+                options.classPath = [options.classPath]
             }
         }
-        if (!conversionOptions.classPath.contains(GROOVY_SRC_DIR)) {
-            conversionOptions.classPath << GROOVY_SRC_DIR
+        if (!options.classPath.contains(GROOVY_SRC_DIR)) {
+            options.classPath << GROOVY_SRC_DIR
         }
-        conversionOptions
+        options
     }
 
     private String convertDomainClassFile(String domainClassName, boolean remote) {

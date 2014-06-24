@@ -39,7 +39,7 @@ class GrooscriptTagLibSpec extends Specification {
 
     static final GROOVY_CODE = 'code example'
     static final JS_CODE = 'js converted code'
-    //static final REMOTE_URL = 'my url'
+    static final REMOTE_URL = 'my url'
     static final TEMPLATE_NAME = 'template name'
 
     void 'test code taglib'() {
@@ -62,7 +62,7 @@ class GrooscriptTagLibSpec extends Specification {
         0 * _
     }
 
-    static final FILE_PATH = 'GrooscriptGrailsPlugin.groovy'
+    /*static final FILE_PATH = 'GrooscriptGrailsPlugin.groovy'
 
     void 'test code taglib with a file'() {
         when:
@@ -82,7 +82,7 @@ class GrooscriptTagLibSpec extends Specification {
         1 * grooscriptConverter.toJavascript(new File(FILE_PATH).text+'\n'+GROOVY_CODE, null) >> JS_CODE
         1 * assetsTagLib.script(['type':'text/javascript'], { it() == JS_CODE})
         0 * _
-    }
+    }*/
 
     void 'test basic template'() {
         given:
@@ -93,10 +93,10 @@ class GrooscriptTagLibSpec extends Specification {
 
         then:
         1 * Util.newTemplateName >> TEMPLATE_NAME
-        //1 * linkGenerator.getServerBaseURL() >> REMOTE_URL
-        /*1 * assetsTagLib.script(['type':'text/javascript'], {
+        1 * linkGenerator.getServerBaseURL() >> REMOTE_URL
+        1 * assetsTagLib.script(['type':'text/javascript'], {
             it() == template.apply(Templates.INIT_GROOSCRIPT_GRAILS, [remoteUrl: REMOTE_URL])
-        })*/
+        })
         1 * assetsTagLib.script(['type':'text/javascript'], {
             it() == template.apply(Templates.TEMPLATE_DRAW, [
                     functionName: TEMPLATE_NAME, jsCode: JS_CODE, selector: "#$TEMPLATE_NAME"]) +
@@ -107,21 +107,38 @@ class GrooscriptTagLibSpec extends Specification {
         result == "\n<div id='$TEMPLATE_NAME'></div>\n"
     }
 
-    /*
     void 'very basic test template options'() {
         when:
         def result = applyTemplate("<grooscript:template functionName='jarJar'" +
-                " itemSelector='#anyId' renderOnReady=\"${true}\">assert true</grooscript:template>")
+                " itemSelector='#anyId' onLoad=\"${false}\">assert true</grooscript:template>")
 
         then:
-        2 * resourceTaglib.script(_)
-        1 * grooscriptConverter.toJavascript(_) >> ''
-        2 * resourceTaglib.require(_)
-        0 * _
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.TEMPLATE_DRAW, [
+                    functionName: 'jarJar', jsCode: JS_CODE, selector: '#anyId'])
+        })
+        1 * grooscriptConverter.toJavascript('def gsTextHtml = { data -> HtmlBuilder.build { -> assert true}}') >> JS_CODE
         !result
     }
 
-    static final FILE_PATH_TEMPLATE = 'src/groovy/MyTemplate.groovy'
+    void 'test onEvent template option'() {
+        given:
+        GroovySpy(Util, global: true)
+
+        when:
+        def result = applyTemplate("<grooscript:template onEvent='myEvent' onLoad=\"${false}\">assert true</grooscript:template>")
+
+        then:
+        1 * Util.newTemplateName >> TEMPLATE_NAME
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.CLIENT_EVENT, [
+                    functionName: TEMPLATE_NAME, nameEvent: 'myEvent'])
+        })
+        1 * grooscriptConverter.toJavascript(_) >> JS_CODE
+        result == "\n<div id='$TEMPLATE_NAME'></div>\n"
+    }
+
+    /*static final FILE_PATH_TEMPLATE = 'src/groovy/MyTemplate.groovy'
 
     void 'test template with a file'() {
         when:

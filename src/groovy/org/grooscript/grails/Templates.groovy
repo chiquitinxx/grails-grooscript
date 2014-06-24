@@ -23,4 +23,7 @@ function ${functionName}(templateParams) {
   ${functionName}();
 })'''
 
+    static final CLIENT_EVENT = '''
+gsEvents.onEvent('${nameEvent}', ${functionName});
+'''
 }
