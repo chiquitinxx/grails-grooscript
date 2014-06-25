@@ -35,7 +35,7 @@ class GrooscriptGrails {
         if (!gs.isGroovyObj(message)) {
             sendMessage = gs.toGroovy(message);
         }
-        grooscriptEvents.sendMessage(channel, sendMessage);
+        gsEvents.sendMessage(channel, sendMessage);
     */}
 
     @GsNative
@@ -76,7 +76,7 @@ class GrooscriptGrails {
         if (params.action == 'delete') {
             type = 'DELETE';
         }
-        if (params.action == 'read') {
+        if (params.action == 'read' || params.action == 'delete') {
             data = null;
             url = url + '/' + params.data.id;
         }

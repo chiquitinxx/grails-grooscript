@@ -39,12 +39,27 @@
     <grooscript:code>
         import test.Book
 
+        //To get some console info
+        //gs.consoleInfo = true
+
         def getList = {
             Book.list().then({ list ->
                 $('#bookList').prepend('<p>Total number of books:'+list.size()+'</p>')
                 list.each {
                     $('#bookList').append('<li>'+it.upperTitle()+'</li>')
                 }
+            })
+        }
+
+        def createAndDeleteBook = { titleBook ->
+            new Book(title: titleBook).save().then({ newBook ->
+                println 'Also created: ' + newBook.upperTitle()
+                newBook.delete().then({ res ->
+                    println 'Deleted success: ' + res
+                    GrooscriptGrails.sendClientMessage('delete', newBook.title)
+                }, { fail ->
+                    println 'Deleted error: ' + fail
+                })
             })
         }
 
@@ -59,6 +74,7 @@
                         },
                         { getResult -> println 'Fail get:' + getResult}
                     )
+                    createAndDeleteBook('Gray')
                 },
                 { result -> println 'Fail creation:' + result}
             )
@@ -66,10 +82,14 @@
     </grooscript:code>
 
     <p>Can combine templates with local events</p>
+    <div id="deleteEvent"></div>
     <div id="lastEvent"></div>
     <grooscript:code>
         $(document).ready({
             gsEvents.sendMessage('newEvent', 'Application started.')
+            gsEvents.onEvent('delete', { title ->
+                $('#deleteEvent').html 'Deleted ' + title
+            })
         })
     </grooscript:code>
 

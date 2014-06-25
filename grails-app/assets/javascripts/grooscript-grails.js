@@ -2990,7 +2990,7 @@ GrooscriptGrails.sendClientMessage = function(channel, message) {
         if (!gs.isGroovyObj(message)) {
             sendMessage = gs.toGroovy(message);
         }
-        grooscriptEvents.sendMessage(channel, sendMessage);
+        gsEvents.sendMessage(channel, sendMessage);
 }
 GrooscriptGrails.doRemoteCall = function(controller, action, params, onSuccess, onFailure) {
   var url = GrooscriptGrails.remoteUrl;
@@ -3027,7 +3027,7 @@ GrooscriptGrails.remoteDomainAction = function(params, onSuccess, onFailure, nam
         if (params.action == 'delete') {
             type = 'DELETE';
         }
-        if (params.action == 'read') {
+        if (params.action == 'read' || params.action == 'delete') {
             data = null;
             url = url + '/' + params.data.id;
         }
@@ -3112,7 +3112,7 @@ GrooscriptGrails.sendClientMessage = function(channel, message) {
         if (!gs.isGroovyObj(message)) {
             sendMessage = gs.toGroovy(message);
         }
-        grooscriptEvents.sendMessage(channel, sendMessage);
+        gsEvents.sendMessage(channel, sendMessage);
 }
 GrooscriptGrails.doRemoteCall = function(controller, action, params, onSuccess, onFailure) {
   var url = GrooscriptGrails.remoteUrl;
@@ -3149,7 +3149,7 @@ GrooscriptGrails.remoteDomainAction = function(params, onSuccess, onFailure, nam
         if (params.action == 'delete') {
             type = 'DELETE';
         }
-        if (params.action == 'read') {
+        if (params.action == 'read' || params.action == 'delete') {
             data = null;
             url = url + '/' + params.data.id;
         }

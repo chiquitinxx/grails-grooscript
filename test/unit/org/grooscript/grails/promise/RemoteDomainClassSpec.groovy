@@ -1,4 +1,4 @@
-package org.grooscript.grails.remote
+package org.grooscript.grails.promise
 
 import org.grooscript.grails.util.GrooscriptGrails
 import spock.lang.Specification

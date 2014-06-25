@@ -30,7 +30,7 @@ class GrooscriptConverterSpec extends Specification {
         then:
         1 * GrooScript.clearAllOptions()
         1 * GrooScript.setConversionProperty('classPath', ['src/groovy'])
-        1 * GrooScript.setConversionProperty('mainContextScope', grooscriptConverter.DEFAULT_CONVERSION_SCOPE_VARS)
+        1 * GrooScript.setConversionProperty('mainContextScope', GrooscriptConverter.DEFAULT_CONVERSION_SCOPE_VARS)
         1 * GrooScript.convert(CODE)
         1 * GrooScript.getNewConverter()
         0 * _
