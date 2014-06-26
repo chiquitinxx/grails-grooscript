@@ -5,7 +5,7 @@
 The plugin adds a new testing phase, *phantomJs*, you can run with _grails test-app functional:phantomJs_ or _grails test-app :phantomJs_.
 The suffix of this tests are *PhantomTest* or *PhantomTests*, that tests have to be in _test/functional_ folder. Just this is a
 functional testing phase, where you can execute your tests with application up. Is the perfect fit to run your
-@PhantomJsTest's. That annotation runs a PhantomJs test, evaluating then code inside the method (converted jo javascript).
+@PhantomJsTest's. That annotation runs a PhantomJs test, evaluating then code inside the method (converted to javascript).
 You need http://phantomjs.org[PhantomJs] installed in your system and setup path in your Config.groovy
 
 [source,groovy]

@@ -17,23 +17,13 @@ some html builders, this is a simple one, that is available inside grooscript js
 </grooscript:template>
 --
 
-The template is executed in the client, not in the server.
-
-You can put templates in separates files if you want to.
-
-You can define a jQuery selector with the elements that will be updated each time template renders.
-
-You can execute the template at start or when you want.
-
-The template can listen client events to renders again.
-
-You can pass a parameter to template, variable 'data' is available inside the tag.
+This tag transform the code in a javascript function that returns html code.
 
 [source,groovy]
 --
 <div id="list"></div>
 
-<grooscript:template renderOnReady="false" functionName="refreshList" itemSelector="#list">
+<grooscript:template onReady="false" functionName="refreshList" itemSelector="#list">
     ul {
         data.each { book ->
             li {

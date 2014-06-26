@@ -2,7 +2,7 @@
 [[_groovyCode]]
 == <grooscript:code>
 
-You can put your Groovy code in gsp's using this tag. You can define a file or put Groovy code inside the tag.
+You can put your Groovy code in gsp's using this tag.
 The groovy code is converted to javascript code and inserted in your page with a _asset.script_ tag.
 In Groovy code inside, maybe Grails can try use it, for example if you put '${something}'.
 If your code use other sources of your application, then that dependency will be converted too.

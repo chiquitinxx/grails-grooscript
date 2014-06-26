@@ -2,16 +2,19 @@
 [[_introduction]]
 = Introduction
 
-This plugin helps you generate javascript code for your pages, in Groovy.
+This plugin allow you use your groovy code in your browser. Convert groovy code to javascript.
 Will speed up your developing, working with the tools you know, like Spock, Codenarc, Gradle,...
 It has a little event module ready to work in your client.
-This plugin needs assets pipeline and cache to run, use _<asset:deferredScripts/>_ in your gsp's with grooscript tags.
 
 == Important
 
+This plugin needs assets pipeline and cache plugin to run, use _<asset:deferredScripts/>_ in your gsp's with grooscript tags.
+
+You have to import grosscript-grails.js when you use grooscript.
+
 Work with domain classes in the client still experimental, don't use in production.
 
-Sometimes plugin needs jquery, be sure is imported in your head, better using asset:javascript.
+Also, you have to add jquery, be sure is imported in your gsp's, better using asset:javascript.
 
 == Requisites
 
@@ -19,4 +22,8 @@ It requires Grails 2.4+
 
 == What is new in 0.1
 
-- First version.
+- Convert groovy code to javascript in your gsp's.
+- Convert groovy files to javascript with conversion daemon.
+- Use your domain classes in your browser.
+- Create html code with a html builder dsl.
+- Use grooscript helper classes as binder.
