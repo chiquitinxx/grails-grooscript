@@ -38,3 +38,10 @@ grails.mime.types = [ // the first one is the default format
     hal:           ['application/hal+json','application/hal+xml'],
     xml:           ['text/xml', 'application/xml']
 ]
+
+grooscript {
+    daemon {
+        source = ['src/groovy']
+        destination = 'web-app/js'
+    }
+}

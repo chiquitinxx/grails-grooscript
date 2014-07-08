@@ -44,6 +44,7 @@ class GrooscriptConverter {
 
         if (conversionDaemon) {
             stopDaemon()
+            sleep(1000)
         }
 
         def config = grailsApplication.config

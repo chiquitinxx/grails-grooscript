@@ -40,18 +40,19 @@ grails.project.dependency.resolution = {
             exclude 'groovy'
             exclude 'gpars'
         }
+        test 'cglib:cglib-nodep:2.2.2'
     }
 
     plugins {
 
-        compile ":asset-pipeline:1.8.10"
-        compile ":cache:1.1.6"
+        compile ":asset-pipeline:1.9.0"
+        compile ":cache:1.1.7"
 
         runtime(":hibernate4:4.3.5.4") {
             export = false
         }
 
-        build(":tomcat:7.0.53",
+        build(":tomcat:7.0.54",
                 ":release:3.0.1",
               ":rest-client-builder:1.0.3") {
             export = false

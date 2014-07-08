@@ -1,9 +1,13 @@
+import grails.util.Environment
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.grooscript.grails.bean.GrooscriptConverter
 import org.grooscript.grails.util.GrooscriptTemplate
-import org.grooscript.grails.util.GrooscriptTemplate
+
+import static org.grooscript.grails.util.Util.consoleMessage
+import static org.grooscript.grails.util.Util.consoleMessage
 
 class GrooscriptGrailsPlugin {
-    def version = "0.1-SNAPSHOT"
+    def version = "0.5-SNAPSHOT"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
         "grails-app/views/error.gsp",
@@ -16,11 +20,11 @@ class GrooscriptGrailsPlugin {
         "web-app/js/**"
     ]
 
-    def title = "Grails grooscript Plugin"
+    def title = "Grails Grooscript Plugin"
     def author = "Jorge Franco"
     def authorEmail = "grooscript@gmail.com"
     def description = '''\
-Use grooscript to work in the client size with your groovy code.
+Use grooscript to work in the client side with your groovy code.
 It converts the code to javascript and your groovy code will run in your browser.
 '''
 
@@ -52,7 +56,7 @@ It converts the code to javascript and your groovy code will run in your browser
     }
 
     def doWithApplicationContext = { ctx ->
-        // TODO Implement post initialization spring config (optional)
+        initGrooscriptDaemon(application)
     }
 
     def onChange = { event ->
@@ -62,11 +66,37 @@ It converts the code to javascript and your groovy code will run in your browser
     }
 
     def onConfigChange = { event ->
-        // TODO Implement code that is executed when the project configuration changes.
-        // The event is the same as for 'onChange'.
+        GrooscriptConverter grooscriptConverter = application.mainContext.grooscriptConverter
+        if (grooscriptConverter.conversionDaemon) {
+            consoleMessage 'Restarting grooscript daemon ...'
+            grooscriptConverter.startDaemon()
+        } else {
+            initGrooscriptDaemon(application)
+        }
     }
 
     def onShutdown = { event ->
-        // TODO Implement code that is executed when the application shuts down (optional)
+        GrooscriptConverter grooscriptConverter = application.mainContext.grooscriptConverter
+        if (grooscriptConverter.conversionDaemon) {
+            consoleMessage 'Stopping grooscript daemon ...'
+            grooscriptConverter.stopDaemon()
+        }
+    }
+
+    private void initGrooscriptDaemon(GrailsApplication application) {
+
+        if (Environment.current == Environment.DEVELOPMENT) {
+
+            def source = application.config.grooscript?.daemon?.source
+            def destination = application.config.grooscript?.daemon?.destination
+
+            //Start the daemon if source and destination are ok
+            if (source && destination && application.mainContext.grooscriptConverter) {
+                consoleMessage 'Starting grooscript daemon ...'
+                application.mainContext.grooscriptConverter.startDaemon()
+            } else {
+                consoleMessage 'Grooscript daemon not started.'
+            }
+        }
     }
 }
