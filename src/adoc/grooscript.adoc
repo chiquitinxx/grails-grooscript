@@ -7,9 +7,11 @@ You don't need to know Grooscript, the plugin do the work for you. But you can
 take a look to http://grooscript.org/ to get more info. Grooscript compile the code,
 inspect the AST tree, and generate the javascript code.
 
-Just remember you need *grooscript-grails.js* to run generated code. Add _<asset:javascript src="grooscript-grails.js"/>_ to your gsp.
+Just remember you need +grooscript-grails.js+ to run converted code. Add +<asset:javascript src="grooscript-grails.js"/+ to your gsp.
 
-Also, there is *grooscriptConverter* bean, that you can inject in your grails artifacts:
+== Spring bean
+
+There is *grooscriptConverter* bean, that you can inject in your grails artifacts:
 
 [source,groovy]
 --
@@ -23,7 +25,22 @@ class MyController {
 }
 --
 
-All conversion done with bean or tags, use classPath 'src/groovy' by default.
+All conversion done with bean or tags, use classPath +''src/groovy''+ by default.
 
-Also remember you can use *conversionDaemon*, to generate your .js files from your groovy
-sources, and use in your gsp's.
+== Conversion daemon
+
+You can activate the conversion daemon to convert groovy files to javascript while your application is up
+in development. Each time you change observed groovy files, javascript file will be converted. To activate
+this daemon have to configure in your +Config.groovy+:
+
+[source,groovy]
+--
+grooscript {
+    daemon {
+        source = ['src/groovy'] //<1>
+        destination = 'web-app/js' //<2>
+    }
+}
+--
+<1> List of groovy files or folders that will be converted to javascript.
+<2> Destination folder of the javascript files.

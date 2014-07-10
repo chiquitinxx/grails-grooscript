@@ -17,13 +17,19 @@ some html builders, this is a simple one, that is available inside grooscript js
 </grooscript:template>
 --
 
-This tag transform the code in a javascript function that returns html code.
+This tag transform the code in a javascript function that returns html code. The options of this tag are:
 
-[source,groovy]
+  onLoad:: By default is true, so the function runs on document ready, and then you html code appears.
+  functionName:: By default a random name is used. But you can define name of the function and use it.
+  itemSelector:: jquery selector of the dom object where html code will be injected.
+
+You can combine grooscript tags to create dynamic applications in the client side using *groovy*.
+
+[source,html]
 --
 <div id="list"></div>
 
-<grooscript:template onReady="false" functionName="refreshList" itemSelector="#list">
+<grooscript:template onLoad="false" functionName="refreshList" itemSelector="#list">
     ul {
         data.each { book ->
             li {
@@ -34,8 +40,8 @@ This tag transform the code in a javascript function that returns html code.
 </grooscript:template>
 
 <grooscript:code>
-    $(document).ready({
-        refreshList([[id: 1, title:'Groovy in Action'], [id: 2, title:'Grails in Action']])
-    })
+    $(document).ready {
+        refreshList [[id: 1, title:'Groovy in Action'], [id: 2, title:'Grails in Action']]
+    }
 </grooscript:code>
 --

@@ -2,11 +2,11 @@
 [[_testing]]
 = PhantomJs Tests
 
-The plugin adds a new testing phase, *phantomJs*, you can run with _grails test-app functional:phantomJs_ or _grails test-app :phantomJs_.
+The plugin adds a new testing phase, *phantomJs*, you can run with +grails test-app functional:phantomJs+ or +grails test-app :phantomJs+.
 The suffix of this tests are *PhantomTest* or *PhantomTests*, that tests have to be in _test/functional_ folder. Just this is a
 functional testing phase, where you can execute your tests with application up. Is the perfect fit to run your
 @PhantomJsTest's. That annotation runs a PhantomJs test, evaluating then code inside the method (converted to javascript).
-You need http://phantomjs.org[PhantomJs] installed in your system and setup path in your Config.groovy
+You need http://phantomjs.org[PhantomJs] installed in your system and setup path in your +Config.groovy+:
 
 [source,groovy]
 --
@@ -21,7 +21,7 @@ import org.grooscript.asts.PhantomJsTest
 
 class MyPhantomTests extends GroovyTestCase {
 
-    @PhantomJsTest(url='http://localhost:8080/grooscript-vertx/main/test')
+    @PhantomJsTest(url='http://localhost:8080/grooscript/main/test')
     void testDefaultController() {
         def title = $("title")
         assert title[0].text=='Title Test',"Title is ${title[0].text}"
