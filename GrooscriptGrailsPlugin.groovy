@@ -14,7 +14,7 @@ class GrooscriptGrailsPlugin {
         "grails-app/controllers/**",
         "grails-app/domain/**",
         "grails-app/views/**",
-        "src/docs/**",
+        "src/adoc/**",
         "web-app/css/**",
         "web-app/images/**",
         "web-app/js/**"
