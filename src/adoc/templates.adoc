@@ -1,4 +1,3 @@
-
 [[_templates]]
 == <grooscript:template>
 
@@ -6,7 +5,7 @@ You can create html templates using this tag. A template is a piece of groovy co
 executed inside a html builder. So you generate javascript code that will run as a DSL(HtmlBuilder). In groovy exists
 some html builders, this is a simple one, that is available inside grooscript js libs. For example:
 
-[source,groovy]
+[source,html]
 --
 <grooscript:template>
     ul {

@@ -8,16 +8,16 @@ in your browser, bind inputs to groovy objects, create html code with a groovy b
 
 == Important
 
-- This plugin needs assets pipeline and cache plugin to run.
+- Use _<asset:deferredScripts/>_ in your gsp's with grooscript tags.
 - You have to import +grosscript-grails.js+ when you use grooscript.
 - Plugin use __jquery__, so remember add that dependency.
-- Work with domain classes in the client still experimental, don't use in production.
+- Work with domain classes still experimental, don't use in production.
 
 == Requisites
 
-It requires Grails 2.4+
+It requires Grails 2.4+, assets pipeline and cache plugin.
 
-== What is new in 0.5
+== What is new in {plugin-version}
 
 - Convert groovy code to javascript in your gsp's.
 - Convert groovy files to javascript with conversion daemon.

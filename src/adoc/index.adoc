@@ -1,7 +1,8 @@
 = Grooscript Grails Plugin
-:grooscript-version: 0.5-SNAPSHOT
+:plugin-version: 0.5-SNAPSHOT
 :author: Jorge Franco
-:revnumber: {grooscript-version}
+:revnumber: {plugin-version}
+:revremark: Grails plugin to convert groovy code to javascript in your grails application
 :imagesdir: ./images
 :toc: right
 :source-highlighter: pygments

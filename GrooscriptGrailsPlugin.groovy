@@ -4,7 +4,6 @@ import org.grooscript.grails.bean.GrooscriptConverter
 import org.grooscript.grails.util.GrooscriptTemplate
 
 import static org.grooscript.grails.util.Util.consoleMessage
-import static org.grooscript.grails.util.Util.consoleMessage
 
 class GrooscriptGrailsPlugin {
     def version = "0.5-SNAPSHOT"
