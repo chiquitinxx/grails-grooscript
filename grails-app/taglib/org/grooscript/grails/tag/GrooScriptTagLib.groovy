@@ -94,6 +94,19 @@ class GrooscriptTagLib {
     }
 
     /**
+     * grooscript:model
+     * domainClass - REQUIRED name of the model class
+     */
+    def model = { attrs ->
+        if (validDomainClassName(attrs.domainClass)) {
+            initGrooscriptGrails()
+            out << asset.script(type: 'text/javascript') {
+                grooscriptConverter.convertDomainClass(attrs.domainClass)
+            }
+        }
+    }
+
+    /**
      * grooscript:remoteModel
      * domainClass - REQUIRED name of the model class
      */

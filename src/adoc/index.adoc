@@ -20,4 +20,5 @@ include::grooscript.adoc[]
 
 include::groovyCode.adoc[]
 include::templates.adoc[]
+include::remoteDomain.adoc[]
 include::testing.adoc[]

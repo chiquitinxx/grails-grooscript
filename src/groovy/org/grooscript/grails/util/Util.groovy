@@ -1,5 +1,8 @@
 package org.grooscript.grails.util
 
+import org.grooscript.GrooScript
+import org.grooscript.grails.domain.DomainClass
+
 /**
  * User: jorgefrancoleza
  * Date: 13/09/13
@@ -32,5 +35,24 @@ class Util {
 
     static String getNewTemplateName() {
         'fTemplate' + new Date().time.toString()
+    }
+
+    static String getDomainFileText(String domainClass, grailsApplication) {
+        def nameFilePath
+        def result = grailsApplication.domainClasses.find { it.fullName == domainClass || it.name == domainClass }
+        if (result) {
+            nameFilePath = "${DOMAIN_DIR}${SEP}${getPathFromClassName(result.clazz.canonicalName)}"
+        }
+        nameFilePath ? new File(nameFilePath).text : null
+    }
+
+    static addCustomizationAstOption(Class clazz) {
+        GrooScript.setConversionProperty('customization', {
+            ast(clazz)
+        })
+    }
+
+    private static getPathFromClassName(String className) {
+        "${className.replaceAll(/\./,SEP)}.groovy"
     }
 }

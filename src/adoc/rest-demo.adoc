@@ -7,7 +7,8 @@
 
 Let's use grails support on http://grails.org/doc/latest/guide/webServices.html#REST[REST] to offer a domain class
 and consume from a gsp using http://github.com/chiquitinxx/grails-grooscript[grooscript grails plugin]. You can use
-groovy code in your gsp's with grooscript tags.
+groovy code in your gsp's with grooscript tags. You can take a look at the source code of this demo in
+http://github.com/chiquitinxx/grails-rest-demo[Github]
 
 
 You need grails 2.4+ installed in your system. Create a new project with

@@ -150,7 +150,7 @@ class GrooscriptTagLibSpec extends Specification {
         2 * resourceTaglib.require(_)
         0 * _
         result.startsWith "\n<div id='fTemplate"
-    }
+    }*/
 
     static final FAKE_NAME = 'FAKE'
     static final DOMAIN_CLASS_NAME = 'correctDomainClass'
@@ -159,7 +159,7 @@ class GrooscriptTagLibSpec extends Specification {
     @Unroll
     void 'test model with domain class'() {
         given:
-        GrooScriptVertxTagLib.metaClass.existDomainClass = { String name ->
+        GrooscriptTagLib.metaClass.existDomainClass = { String name ->
             name != FAKE_NAME
         }
 
@@ -167,9 +167,10 @@ class GrooscriptTagLibSpec extends Specification {
         applyTemplate("<grooscript:model domainClass='${domainClassName}'/>")
 
         then:
-        numberTimes * resourceTaglib.require([module: 'domain'])
-        numberTimes * grooscriptConverter.convertDomainClass(domainClassName)
-        0 * _
+        numberTimes * assetsTagLib.script(['type':'text/javascript'], {
+            it() == JS_CODE
+        })
+        numberTimes * grooscriptConverter.convertDomainClass(domainClassName) >> JS_CODE
 
         where:
         domainClassName                | numberTimes
@@ -177,23 +178,6 @@ class GrooscriptTagLibSpec extends Specification {
         DOMAIN_CLASS_NAME              | 1
         DOMAIN_CLASS_NAME_WITH_PACKAGE | 1
     }
-
-    void 'test onEvent'() {
-        when:
-        applyTemplate("<grooscript:onEvent name='nameEvent'>assert true</grooscript:onEvent>")
-
-        then:
-        2 * resourceTaglib.script(_)
-        1 * resourceTaglib.require([module: 'clientEvents'])
-        1 * resourceTaglib.require([module: 'grooscriptGrails'])
-        0 * _
-    }
-
-    */
-
-    static final FAKE_NAME = 'FAKE'
-    static final DOMAIN_CLASS_NAME = 'correctDomainClass'
-    static final DOMAIN_CLASS_NAME_WITH_PACKAGE = 'org.grooscript.correctDomainClass'
 
     @Unroll
     void 'test remote model with domain class'() {

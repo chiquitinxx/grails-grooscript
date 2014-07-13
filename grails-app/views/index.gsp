@@ -30,6 +30,30 @@
         }
     </grooscript:template>
 
+    <p>List of good actors:</p>
+    <ul id="actorList">
+    </ul>
+
+    <p>To use a domain class in the client, without sync with the server, use grooscript:model</p>
+    <grooscript:model domainClass="Actor"/>
+
+    <grooscript:code>
+        import test.Actor
+
+        def actors = [[name: 'Good Actor', oscars: 2], [name: 'Not so good actor', oscars: 0], [name: '', oscars: 35]]
+
+        actors.each {
+            def actor = new Actor(it)
+            if (actor.validate() && actor.goodActor()) {
+                actor.save()
+            }
+        }
+
+        //Actor.list().each {
+        //    $('#actorList').append '<li>'+it.name+'</li>'
+        //}
+    </grooscript:code>
+
     <ul id="bookList">
     </ul>
 
@@ -85,12 +109,12 @@
     <div id="deleteEvent"></div>
     <div id="lastEvent"></div>
     <grooscript:code>
-        $(document).ready({
+        $(document).ready {
             gsEvents.sendMessage('newEvent', 'Application started.')
             gsEvents.onEvent('delete', { title ->
                 $('#deleteEvent').html 'Deleted ' + title
             })
-        })
+        }
     </grooscript:code>
 
     <grooscript:template onLoad="false" onEvent="newEvent" itemSelector="#lastEvent">

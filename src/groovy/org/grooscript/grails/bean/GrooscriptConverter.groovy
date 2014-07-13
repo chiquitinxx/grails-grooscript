@@ -6,6 +6,7 @@ import org.grooscript.GrooScript
 import org.grooscript.daemon.ConversionDaemon
 import org.grooscript.grails.domain.DomainClass
 import org.grooscript.grails.remote.RemoteDomainClass
+import org.grooscript.grails.util.Util
 
 import static org.grooscript.grails.util.Util.*
 
@@ -66,7 +67,11 @@ class GrooscriptConverter {
         }
     }
 
-    def convertRemoteDomainClass(String domainClassName) {
+    String convertDomainClass(String domainClassName) {
+        convertDomainClassFile(domainClassName, false)
+    }
+
+    String convertRemoteDomainClass(String domainClassName) {
         convertDomainClassFile(domainClassName, true)
     }
 
@@ -117,21 +122,13 @@ class GrooscriptConverter {
     private String convertDomainClassFile(String domainClassName, boolean remote) {
         String result
         try {
-            String domainFilePath = getDomainFilePath(domainClassName)
-            if (domainFilePath) {
+            String domainFileText = Util.getDomainFileText(domainClassName, grailsApplication)
+            if (domainFileText) {
                 try {
                     GrooScript.clearAllOptions()
-                    if (remote) {
-                        GrooScript.setConversionProperty('customization', {
-                            ast(RemoteDomainClass)
-                        })
-                    } else {
-                        GrooScript.setConversionProperty('customization', {
-                            ast(DomainClass)
-                        })
-                    }
+                    Util.addCustomizationAstOption(remote ? RemoteDomainClass : DomainClass)
                     //GrooScript.setConversionProperty('classPath', [GROOVY_SOURCE_CODE, GRAILS_DOMAIN_CLASSES])
-                    result = GrooScript.convert(new File(domainFilePath).text)
+                    result = GrooScript.convert(domainFileText)
                 } catch (e) {
                     consoleError 'Error converting ' + e.message
                 }
@@ -141,20 +138,6 @@ class GrooscriptConverter {
         } catch (e) {
             consoleError 'GrooscriptConverter Error creating domain class js file ' + e.message
         }
-        GrooScript.clearAllOptions()
         result
-    }
-
-    private String getDomainFilePath(String domainClass) {
-        def nameFilePath
-        def result = grailsApplication.domainClasses.find { it.fullName == domainClass || it.name == domainClass }
-        if (result) {
-            nameFilePath = "${DOMAIN_DIR}${SEP}${getPathFromClassName(result.clazz.canonicalName)}"
-        }
-        nameFilePath
-    }
-
-    private getPathFromClassName(String className) {
-        "${className.replaceAll(/\./,SEP)}.groovy"
     }
 }
