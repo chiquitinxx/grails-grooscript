@@ -49,9 +49,9 @@
             }
         }
 
-        //Actor.list().each {
-        //    $('#actorList').append '<li>'+it.name+'</li>'
-        //}
+        Actor.list().each {
+            $('#actorList').append '<li>'+it.name+'</li>'
+        }
     </grooscript:code>
 
     <ul id="bookList">

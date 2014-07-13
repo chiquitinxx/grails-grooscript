@@ -36,4 +36,9 @@ class TagsPhantomTest extends GroovyTestCase {
     void testDeleteBook() {
         assert $('#deleteEvent').text() == 'Deleted Gray', 'Delete event is: ' + $('#deleteEvent').text()
     }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    void testModelActors() {
+        assert $('#actorList li').size() == 1, 'Number of actors is ' + $('#actorList li').size()
+    }
 }
