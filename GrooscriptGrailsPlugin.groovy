@@ -28,7 +28,7 @@ Use grooscript to work in the client side with your groovy code.
 It converts the code to javascript and your groovy code will run in your browser.
 '''
 
-    def documentation = "http://grooscript.org/grailsPlugin"
+    def documentation = "http://grooscript.org/grails-plugin/index.html"
 
     def license = "APACHE"
 
@@ -74,7 +74,6 @@ It converts the code to javascript and your groovy code will run in your browser
             def source = application.config.grooscript?.daemon?.source
             def destination = application.config.grooscript?.daemon?.destination
 
-            //Start the daemon if source and destination are ok
             if (source && destination && application.mainContext.grooscriptConverter) {
                 consoleMessage 'Starting grooscript daemon ...'
                 application.mainContext.grooscriptConverter.startDaemon(application.config.grooscript.daemon)

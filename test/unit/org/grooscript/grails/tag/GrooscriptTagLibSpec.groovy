@@ -54,7 +54,7 @@ class GrooscriptTagLibSpec extends Specification {
 
     void 'test code taglib with conversion options'() {
         when:
-        applyTemplate("<grooscript:code options='[recursive: true]'>${GROOVY_CODE}</grooscript:code>")
+        applyTemplate("<grooscript:code conversionOptions='[recursive: true]'>${GROOVY_CODE}</grooscript:code>")
 
         then:
         1 * grooscriptConverter.toJavascript(GROOVY_CODE, [recursive: true]) >> JS_CODE

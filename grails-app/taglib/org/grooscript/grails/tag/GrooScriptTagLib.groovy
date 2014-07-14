@@ -21,7 +21,7 @@ class GrooscriptTagLib {
 
     /**
      * grooscript:code
-     * filePath - optional - path to the file to be converted from project dir
+     * conversionOptions - optional - map of conversion options
      */
     def code = { attrs, body ->
         def script
@@ -39,7 +39,7 @@ class GrooscriptTagLib {
         }*/
         script = body()
         if (script) {
-            def jsCode = grooscriptConverter.toJavascript(script.toString(), attrs.options)
+            def jsCode = grooscriptConverter.toJavascript(script.toString(), attrs.conversionOptions)
             asset.script(type: 'text/javascript') {
                 jsCode
             }
@@ -49,11 +49,10 @@ class GrooscriptTagLib {
     /**
      * grooscript: template
      *
-     * filePath - optional - path to file to be used as template, from project dir
      * functionName - optional - name of the function that renders the template
      * itemSelector - optional - jQuery string selector where html generated will be placed
-     * renderOnReady - optional defaults true - if template will be render onReady page event
-     * listenEvents - optional - string list of events that render the page
+     * onLoad - optional defaults true - if template will be render onReady page event
+     * onEvent - optional - string list of events that render the page
      */
     def template = { attrs, body ->
         def script
@@ -144,18 +143,6 @@ class GrooscriptTagLib {
             }
         }
     }
-
-    /**
-     * grooscript:model
-     * domainClass - REQUIRED name of the model class
-     */
-    /*
-    def model = { attrs ->
-        if (validDomainClassName(attrs.domainClass)) {
-            grooscriptConverter.convertDomainClass(attrs.domainClass)
-            r.require(module: 'domain')
-        }
-    }*/
 
     private validDomainClassName(String name) {
         if (!name || !(name instanceof String)) {
