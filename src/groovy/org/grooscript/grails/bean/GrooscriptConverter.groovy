@@ -41,29 +41,23 @@ class GrooscriptConverter {
         jsCode
     }
 
-    void startDaemon() {
+    void startDaemon(Map daemonConfig = [:]) {
 
-        if (conversionDaemon) {
-            stopDaemon()
-            sleep(1000)
-        }
+        stopDaemon()
 
-        def config = grailsApplication.config
+        def source = daemonConfig.source
+        def destination = daemonConfig.destination
+        def conversionOptions = addDefaultOptions(daemonConfig.conversionOptions)
 
-        def source = config.grooscript?.daemon?.source
-        def destination = config.grooscript?.daemon?.destination
-
-        //By default
-        def options = config.grooscript?.daemon?.options
-        options = addGroovySourceClassPathIfNeeded(options)
-
-        conversionDaemon = GrooScript.startConversionDaemon(source, destination, options,
-                closureToRunAfterDaemonConversion)
+        conversionDaemon = GrooScript.startConversionDaemon(source, destination, conversionOptions,
+                closureToRunAfterDaemonConversion(daemonConfig.doAfter))
     }
 
     void stopDaemon() {
         if (conversionDaemon) {
+            consoleMessage 'Stopping old conversion daemon.'
             conversionDaemon.stop()
+            sleep(1000)
         }
     }
 
@@ -82,14 +76,14 @@ class GrooscriptConverter {
         options
     }
 
-    private Closure getClosureToRunAfterDaemonConversion() {
+    private Closure closureToRunAfterDaemonConversion(Closure doAfter) {
 
         //Config option to do
-        def doAfterDaemonConversion = grailsApplication.config.grooscript?.daemon?.doAfter
+        def doAfterDaemonConversion = doAfter
 
         //Full action to do after some change
         Closure doAfterDaemon = null
-        if (doAfterDaemonConversion && doAfterDaemonConversion instanceof Closure) {
+        if (doAfterDaemonConversion) {
             doAfterDaemon = { listFilesList ->
                 doAfterDaemonConversion(listFilesList)
             }

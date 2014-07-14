@@ -9,11 +9,12 @@ class GrooscriptGrailsPlugin {
     def version = "0.5-SNAPSHOT"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
-        "grails-app/views/error.gsp",
+        "grails-app/assets/javascripts/app/**",
         "grails-app/controllers/**",
         "grails-app/domain/**",
         "grails-app/views/**",
         "src/adoc/**",
+        "src/groovy/MyScript.groovy",
         "web-app/css/**",
         "web-app/images/**",
         "web-app/js/**"
@@ -50,28 +51,12 @@ It converts the code to javascript and your groovy code will run in your browser
         grooscriptTemplate(GrooscriptTemplate)
     }
 
-    def doWithDynamicMethods = { ctx ->
-        // TODO Implement registering dynamic methods to classes (optional)
-    }
-
     def doWithApplicationContext = { ctx ->
         initGrooscriptDaemon(application)
     }
 
-    def onChange = { event ->
-        // TODO Implement code that is executed when any artefact that this plugin is
-        // watching is modified and reloaded. The event contains: event.source,
-        // event.application, event.manager, event.ctx, and event.plugin.
-    }
-
     def onConfigChange = { event ->
-        GrooscriptConverter grooscriptConverter = application.mainContext.grooscriptConverter
-        if (grooscriptConverter.conversionDaemon) {
-            consoleMessage 'Restarting grooscript daemon ...'
-            grooscriptConverter.startDaemon()
-        } else {
-            initGrooscriptDaemon(application)
-        }
+        initGrooscriptDaemon(application)
     }
 
     def onShutdown = { event ->
@@ -92,7 +77,7 @@ It converts the code to javascript and your groovy code will run in your browser
             //Start the daemon if source and destination are ok
             if (source && destination && application.mainContext.grooscriptConverter) {
                 consoleMessage 'Starting grooscript daemon ...'
-                application.mainContext.grooscriptConverter.startDaemon()
+                application.mainContext.grooscriptConverter.startDaemon(application.config.grooscript.daemon)
             } else {
                 consoleMessage 'Grooscript daemon not started.'
             }

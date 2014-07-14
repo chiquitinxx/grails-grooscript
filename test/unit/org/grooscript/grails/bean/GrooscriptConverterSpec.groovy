@@ -7,6 +7,7 @@ import org.grooscript.grails.domain.DomainClass
 import org.grooscript.grails.remote.RemoteDomainClass
 import org.grooscript.grails.util.Util
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * User: jorgefrancoleza
@@ -18,6 +19,7 @@ class GrooscriptConverterSpec extends Specification {
     private static final CODE = 'def a = 5; b.go()'
     private static final DOMAIN_CLASS = 'domainClass'
     private static final DOMAIN_CLASS_PATH = 'domainClassPath'
+    private static final DO_AFTER_RESULT = '5'
     def grooscriptConverter = new GrooscriptConverter()
     def grailsApplication = Stub(GrailsApplication)
 
@@ -48,20 +50,42 @@ class GrooscriptConverterSpec extends Specification {
 
     def 'start conversion daemon without conversion options'() {
         given:
-        def conversionOptions = [:]
         def daemon = Mock(ConversionDaemon)
-        grailsApplication.config >> [grooscript: [daemon:
-            [source: 'source', destination: 'destination', options: conversionOptions]
-        ]]
+        def options = [source: 'source', destination: 'destination']
 
         when:
-        grooscriptConverter.startDaemon()
+        grooscriptConverter.startDaemon(options)
 
         then:
-        1 * GrooScript.startConversionDaemon('source', 'destination', ['classPath':['src/groovy']], null) >> daemon
+        1 * GrooScript.startConversionDaemon('source', 'destination',
+                ['classPath':['src/groovy'], 'mainContextScope': GrooscriptConverter.DEFAULT_CONVERSION_SCOPE_VARS],
+                null) >> daemon
         0 * _
         grooscriptConverter.conversionDaemon == daemon
     }
+
+    def 'start conversion daemon with conversion options'() {
+        given:
+        def doAfter = { list -> DO_AFTER_RESULT }
+        def conversionOptions = [classPath: 'mySrc']
+        def daemon = Mock(ConversionDaemon)
+        def options = [source: 'source', destination: 'destination',
+                       conversionOptions: conversionOptions, doAfter: doAfter]
+
+        when:
+        grooscriptConverter.startDaemon(options)
+
+        then:
+        1 * GrooScript.startConversionDaemon('source', 'destination',
+                [
+                    'classPath':['mySrc', 'src/groovy'],
+                    'mainContextScope': GrooscriptConverter.DEFAULT_CONVERSION_SCOPE_VARS
+                ], { it([]) == DO_AFTER_RESULT}) >> daemon
+        0 * _
+        grooscriptConverter.conversionDaemon == daemon
+    }
+
+
 
     def 'stop the daemon'() {
         given:

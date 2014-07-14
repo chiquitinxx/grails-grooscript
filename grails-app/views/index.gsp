@@ -121,6 +121,8 @@
         p 'New event: ' + data
     </grooscript:template>
 
+    <asset:javascript src="app/MyScript.js"/>
+
     <p>Have to render all scripts with asset:deferredScripts at the end</p>
     <asset:deferredScripts/>
 

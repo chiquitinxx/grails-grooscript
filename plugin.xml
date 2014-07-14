@@ -9,6 +9,6 @@ It converts the code to javascript and your groovy code will run in your browser
   <type>GrooscriptGrailsPlugin</type>
   <resources>
     <resource>GrooscriptCacheConfig</resource>
-    <resource>org.grooscript.grails.tag.GrooScriptTagLib</resource>
+    <resource>org.grooscript.grails.tag.GrooscriptTagLib</resource>
   </resources>
 </plugin>

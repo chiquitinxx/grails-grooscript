@@ -36,7 +36,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.grooscript:grooscript:0.5.2-SNAPSHOT') {
+        compile ('org.grooscript:grooscript:0.5.2') {
             exclude 'groovy'
             exclude 'gpars'
         }
@@ -45,7 +45,7 @@ grails.project.dependency.resolution = {
 
     plugins {
 
-        compile ":asset-pipeline:1.9.0"
+        compile ":asset-pipeline:1.9.3"
         compile ":cache:1.1.7"
 
         runtime(":hibernate4:4.3.5.4") {

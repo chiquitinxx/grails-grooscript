@@ -3,3 +3,6 @@ target
 grails-grooscript-grailsPlugins.iml
 grails-grooscript.iml
 index.html
+grails-app/assets/javascripts/app
+grails-grooscript-*.zip
+grails-grooscript-*.zip.sha1

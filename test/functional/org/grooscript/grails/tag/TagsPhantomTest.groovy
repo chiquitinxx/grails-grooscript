@@ -41,4 +41,9 @@ class TagsPhantomTest extends GroovyTestCase {
     void testModelActors() {
         assert $('#actorList li').size() == 1, 'Number of actors is ' + $('#actorList li').size()
     }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    void testDaemonConversion() {
+        assert $('h4').text() == 'The end!', 'h4 is ' + $('h4').text()
+    }
 }

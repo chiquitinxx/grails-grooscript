@@ -1,3 +1,5 @@
+import org.grooscript.GrooScript
+
 // configuration for plugin testing - will not be included in the plugin zip
 
 log4j = {
@@ -41,7 +43,14 @@ grails.mime.types = [ // the first one is the default format
 
 grooscript {
     daemon {
-        source = ['src/groovy']
-        destination = 'web-app/js'
+        source = ['src/groovy/MyScript.groovy']
+        destination = 'grails-app/assets/javascripts/app'
+        conversionOptions {
+            initialText = '//Converted'
+        }
+        doAfter = { list ->
+            if (list)
+                println "************ Converted files: ${list}"
+        }
     }
 }
