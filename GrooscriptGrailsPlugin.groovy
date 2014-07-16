@@ -6,7 +6,7 @@ import org.grooscript.grails.util.GrooscriptTemplate
 import static org.grooscript.grails.util.Util.consoleMessage
 
 class GrooscriptGrailsPlugin {
-    def version = "0.5-SNAPSHOT"
+    def version = "0.5"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
         "grails-app/assets/javascripts/app/**",
@@ -25,7 +25,7 @@ class GrooscriptGrailsPlugin {
     def authorEmail = "grooscript@gmail.com"
     def description = '''\
 Use grooscript to work in the client side with your groovy code.
-It converts the code to javascript and your groovy code will run in your browser.
+It converts the code to javascript and your groovy code will run in the browser.
 '''
 
     def documentation = "http://grooscript.org/grails-plugin/index.html"
