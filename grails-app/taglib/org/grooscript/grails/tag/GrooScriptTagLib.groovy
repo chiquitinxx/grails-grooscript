@@ -131,9 +131,11 @@ class GrooscriptTagLib {
 
     private processTemplateEvents(String onEvent, functionName) {
         if (onEvent) {
-            def listEvents = [onEvent]
+            def listEvents
             if (onEvent.contains(',')) {
-                listEvents = listEvents.split(',')
+                listEvents = onEvent.split(',')
+            } else {
+                listEvents = [onEvent]
             }
             listEvents.each { nameEvent ->
                 asset.script(type: 'text/javascript') {
@@ -146,7 +148,7 @@ class GrooscriptTagLib {
 
     private validDomainClassName(String name) {
         if (!name || !(name instanceof String)) {
-            consoleError "GrooscriptVertxTagLib have to define domainClass property as String"
+            consoleError "GrooscriptTagLib have to define domainClass property as String"
         } else {
             if (existDomainClass(name)) {
                 return true
@@ -165,22 +167,21 @@ class GrooscriptTagLib {
      * grooscript:onEvent
      * name - name of the event
      */
-    /*
     def onEvent = { attrs, body ->
         String name = attrs.name
         if (name) {
-            r.require(module: 'clientEvents')
             initGrooscriptGrails()
 
-            r.script() {
-                def script = body()
-                def jsCode = grooscriptConverter.toJavascript("{ message -> ${script}}").trim()
-                jsCode = removeLastSemicolon(jsCode)
+            def script = body()
+            def jsCode = grooscriptConverter.toJavascript("{ event -> ${script}}").trim()
 
-                out << "\ngrooscriptEvents.onEvent('${name}', ${jsCode});\n"
+            asset.script(type: 'text/javascript') {
+                grooscriptTemplate.apply(Templates.ON_EVENT_TAG,
+                        [jsCode: removeLastSemicolon(jsCode), nameEvent: name])
             }
+
         } else {
-            consoleError 'GrooScriptVertxTagLib onEvent need define name property'
+            consoleError 'GrooscriptTagLib onEvent need define name property'
         }
     }
 
@@ -191,13 +192,4 @@ class GrooscriptTagLib {
             return code
         }
     }
-
-    private shortDomainClassName(String domainClassName) {
-        def pos = domainClassName.lastIndexOf('.')
-        if (pos) {
-            return domainClassName.substring(pos + 1)
-        } else {
-            return domainClassName
-        }
-    }*/
 }

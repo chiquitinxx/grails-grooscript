@@ -121,12 +121,12 @@ class GrooscriptTagLibSpec extends Specification {
         !result
     }
 
-    void 'test onEvent template option'() {
+    void 'test template with onEvent option'() {
         given:
         GroovySpy(Util, global: true)
 
         when:
-        def result = applyTemplate("<grooscript:template onEvent='myEvent' onLoad=\"${false}\">assert true</grooscript:template>")
+        applyTemplate("<grooscript:template onEvent='myEvent' onLoad=\"${false}\">assert true</grooscript:template>")
 
         then:
         1 * Util.newTemplateName >> TEMPLATE_NAME
@@ -135,7 +135,41 @@ class GrooscriptTagLibSpec extends Specification {
                     functionName: TEMPLATE_NAME, nameEvent: 'myEvent'])
         })
         1 * grooscriptConverter.toJavascript(_) >> JS_CODE
-        result == "\n<div id='$TEMPLATE_NAME'></div>\n"
+    }
+
+    void 'test template with onEvent list option'() {
+        given:
+        GroovySpy(Util, global: true)
+
+        when:
+        applyTemplate("<grooscript:template onEvent='eventOne, eventTwo' onLoad=\"${false}\">assert true</grooscript:template>")
+
+        then:
+        1 * Util.newTemplateName >> TEMPLATE_NAME
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.CLIENT_EVENT, [
+                    functionName: TEMPLATE_NAME, nameEvent: 'eventOne'])
+        })
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.CLIENT_EVENT, [
+                    functionName: TEMPLATE_NAME, nameEvent: 'eventTwo'])
+        })
+        1 * grooscriptConverter.toJavascript(_) >> JS_CODE
+    }
+
+    void 'test onEvent tag'() {
+        given:
+        GroovySpy(Util, global: true)
+
+        when:
+        def result = applyTemplate("<grooscript:onEvent name='myEvent'>assert true</grooscript:onEvent>")
+
+        then:
+        1 * grooscriptConverter.toJavascript('{ event -> assert true}') >> JS_CODE
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.ON_EVENT_TAG, [nameEvent: 'myEvent', jsCode: JS_CODE])
+        })
+        result == ''
     }
 
     /*static final FILE_PATH_TEMPLATE = 'src/groovy/MyTemplate.groovy'

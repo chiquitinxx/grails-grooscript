@@ -26,4 +26,8 @@ function ${functionName}(templateParams) {
     static final CLIENT_EVENT = '''
 gsEvents.onEvent('${nameEvent}', ${functionName});
 '''
+
+    static final ON_EVENT_TAG = '''
+gsEvents.onEvent('${nameEvent}', ${jsCode});
+'''
 }

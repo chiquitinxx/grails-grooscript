@@ -46,4 +46,9 @@ class TagsPhantomTest extends GroovyTestCase {
     void testDaemonConversion() {
         assert $('h4').text() == 'The end!', 'h4 is ' + $('h4').text()
     }
+
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    void testOnScriptTag() {
+        assert $('#customReadEvent').text() == 'Data event: Application ready.', 'Data event is: ' + $('#customReadEvent').text()
+    }
 }

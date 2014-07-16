@@ -121,6 +121,18 @@
         p 'New event: ' + data
     </grooscript:template>
 
+    <p>Can react directly to events</p>
+    <grooscript:code>
+        $(document).ready {
+            gsEvents.sendMessage('startEvent', 'Application ready.')
+        }
+    </grooscript:code>
+    <grooscript:onEvent name="startEvent">
+        $('#customReadEvent').append '<p>Data event: ' + event + '</p>'
+    </grooscript:onEvent>
+    <div id="customReadEvent"></div>
+
+    <p>Can add converted files from th daemon</p>
     <asset:javascript src="app/MyScript.js"/>
 
     <p>Have to render all scripts with asset:deferredScripts at the end</p>
