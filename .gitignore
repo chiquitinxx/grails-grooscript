@@ -1,8 +1,7 @@
-web-app/WEB-INF
 target
 grails-grooscript-grailsPlugins.iml
 grails-grooscript.iml
 index.html
-grails-app/assets/javascripts/app
+grails-app/assets/javascripts/app/*.js
 grails-grooscript-*.zip
 grails-grooscript-*.zip.sha1
