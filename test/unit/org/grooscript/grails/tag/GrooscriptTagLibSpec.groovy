@@ -235,4 +235,27 @@ class GrooscriptTagLibSpec extends Specification {
         DOMAIN_CLASS_NAME              | 1
         DOMAIN_CLASS_NAME_WITH_PACKAGE | 1
     }
+
+    void 'init websockets spring plugin'() {
+        when:
+        applyTemplate('<grooscript:initSpringWebsocket />')
+
+        then:
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.SPRING_WEBSOCKET, [url: '/stomp', jsCode: ''])
+        })
+        0 * _
+    }
+
+    void 'init websockets spring plugin with connect function'() {
+        when:
+        applyTemplate('<grooscript:initSpringWebsocket>assert true</grooscript:initSpringWebsocket>')
+
+        then:
+        1 * grooscriptConverter.toJavascript('assert true') >> JS_CODE
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.SPRING_WEBSOCKET, [url: '/stomp', jsCode: JS_CODE])
+        })
+        0 * _
+    }
 }

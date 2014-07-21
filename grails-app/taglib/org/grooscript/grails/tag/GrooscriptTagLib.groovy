@@ -185,6 +185,20 @@ class GrooscriptTagLib {
         }
     }
 
+    def initSpringWebsocket = { attrs, body ->
+
+        def script = body()
+        def jsCode = ''
+        if (script) {
+            initGrooscriptGrails()
+            jsCode = grooscriptConverter.toJavascript(script)
+        }
+        def url = createLink(uri: '/stomp')
+        asset.script(type: 'text/javascript') {
+            grooscriptTemplate.apply(Templates.SPRING_WEBSOCKET, [url: url, jsCode: jsCode])
+        }
+    }
+
     private removeLastSemicolon(String code) {
         if (code.lastIndexOf(';') >= 0) {
             return code.substring(0, code.lastIndexOf(';'))

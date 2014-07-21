@@ -30,4 +30,19 @@ gsEvents.onEvent('${nameEvent}', ${functionName});
     static final ON_EVENT_TAG = '''
 gsEvents.onEvent('${nameEvent}', ${jsCode});
 '''
+
+    static final SPRING_WEBSOCKET = '''
+\\$(document).ready(function() {
+
+    var socket = new SockJS("${url}");
+    websocketClient = Stomp.over(socket);
+
+    websocketClient.connect({}, function() {
+        websocketClient.subscribe("/topic/hello", function(message) {
+            \\$("#helloDiv").append(message.body);
+        });
+        ${jsCode}
+    });
+});
+'''
 }

@@ -40,6 +40,7 @@ grails.mime.types = [ // the first one is the default format
 ]
 
 grooscript {
+    websockets = 'springWebsocketPlugin'
     daemon {
         source = ['src/groovy/MyScript.groovy']
         destination = 'grails-app/assets/javascripts/app'

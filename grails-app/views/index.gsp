@@ -7,7 +7,7 @@
 <html>
 <head>
     <title>Grooscript plugin</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <asset:javascript src="app/jquery.min.js"/>
     <asset:javascript src="grooscript-grails.js"/>
 </head>
 

@@ -2,6 +2,7 @@ import grails.util.Environment
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.grooscript.grails.bean.GrooscriptConverter
 import org.grooscript.grails.util.GrooscriptTemplate
+import org.grooscript.grails.websocket.SpringWebsocketPlugin
 
 import static org.grooscript.grails.util.Util.consoleMessage
 
@@ -49,6 +50,12 @@ It converts the code to javascript and your groovy code will run in the browser.
             grailsApplication = ref('grailsApplication')
         }
         grooscriptTemplate(GrooscriptTemplate)
+
+        if (application.config.grooscript?.websockets == 'springWebsocketPlugin') {
+            websocketSender(SpringWebsocketPlugin) {
+                brokerMessagingTemplate = ref('brokerMessagingTemplate')
+            }
+        }
     }
 
     def doWithApplicationContext = { ctx ->
