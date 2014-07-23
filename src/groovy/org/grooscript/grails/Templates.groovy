@@ -38,11 +38,36 @@ gsEvents.onEvent('${nameEvent}', ${jsCode});
     websocketClient = Stomp.over(socket);
 
     websocketClient.connect({}, function() {
-        websocketClient.subscribe("/topic/hello", function(message) {
-            \\$("#helloDiv").append(message.body);
-        });
+        proccessWebsocketSubscribes();
         ${jsCode}
     });
+
+    function proccessWebsocketSubscribes() {
+        var i = 0;
+        while (i >= 0) {
+          try {
+            var func = eval('gSonServerEvent' + (i++));
+            if (func !== undefined && typeof func === "function") {
+                func();
+            } else {
+                i = -1;
+            }
+          } catch (e) {
+            i = -1;
+          }
+        }
+    }
 });
+'''
+
+    static final ON_SERVER_EVENT_RUN = '''def run = { data -> ${code} }'''
+
+    static final ON_SERVER_EVENT = '''
+var ${functionName} = function() {
+    websocketClient.subscribe("${path}", function(message) {
+        ${jsCode}
+        run(gs.toGroovy(jQuery.parseJSON(message.body), ${type}));
+    });
+};
 '''
 }

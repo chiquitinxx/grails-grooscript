@@ -258,4 +258,30 @@ class GrooscriptTagLibSpec extends Specification {
         })
         0 * _
     }
+
+    void 'on server event'() {
+        when:
+        applyTemplate('<grooscript:onServerEvent path="/myPath">assert true</grooscript:onServerEvent>')
+
+        then:
+        1 * grooscriptConverter.toJavascript('def run = { data -> assert true }') >> JS_CODE
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.ON_SERVER_EVENT,
+                    [jsCode: JS_CODE, path: '/myPath', functionName: 'gSonServerEvent0', type: 'null'])
+        })
+        0 * _
+    }
+
+    void 'on server event with type response'() {
+        when:
+        applyTemplate('<grooscript:onServerEvent path="/myPath" type="Type">assert true</grooscript:onServerEvent>')
+
+        then:
+        1 * grooscriptConverter.toJavascript('def run = { data -> assert true }') >> JS_CODE
+        1 * assetsTagLib.script(['type':'text/javascript'], {
+            it() == template.apply(Templates.ON_SERVER_EVENT,
+                    [jsCode: JS_CODE, path: '/myPath', functionName: 'gSonServerEvent0', type: 'Type'])
+        })
+        0 * _
+    }
 }

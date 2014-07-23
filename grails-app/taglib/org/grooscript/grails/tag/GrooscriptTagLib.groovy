@@ -190,12 +190,27 @@ class GrooscriptTagLib {
         def script = body()
         def jsCode = ''
         if (script) {
-            initGrooscriptGrails()
             jsCode = grooscriptConverter.toJavascript(script)
         }
         def url = createLink(uri: '/stomp')
         asset.script(type: 'text/javascript') {
             grooscriptTemplate.apply(Templates.SPRING_WEBSOCKET, [url: url, jsCode: jsCode])
+        }
+    }
+
+    def onServerEvent = { attrs, body ->
+
+        def script = body()
+        def jsCode = ''
+        if (script) {
+            jsCode = grooscriptConverter.toJavascript(
+                    grooscriptTemplate.apply(Templates.ON_SERVER_EVENT_RUN, [code: script]))
+        }
+        asset.script(type: 'text/javascript') {
+            grooscriptTemplate.apply(Templates.ON_SERVER_EVENT,
+                    [jsCode: jsCode, path: attrs.path,
+                     functionName: onServerEventFunctionName,
+                     type: attrs.type ?: 'null'])
         }
     }
 
@@ -205,5 +220,17 @@ class GrooscriptTagLib {
         } else {
             return code
         }
+    }
+
+    private static final ON_SERVER_EVENT_FUNCTION_NAME = 'gSonServerEvent'
+    private static final ON_SERVER_EVENT_COUNT = 'gSonEventCount'
+
+    private getOnServerEventFunctionName() {
+        def number = request.getAttribute(ON_SERVER_EVENT_COUNT)
+        if (number == null) {
+            number = 0
+        }
+        request.setAttribute(ON_SERVER_EVENT_COUNT, number + 1)
+        ON_SERVER_EVENT_FUNCTION_NAME + number
     }
 }

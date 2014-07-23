@@ -1,8 +1,6 @@
 package websockets
 
-import org.grooscript.grails.websocket.WebsocketSender
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.SendTo
 
 class ExampleController {
 
@@ -13,5 +11,7 @@ class ExampleController {
     @MessageMapping("/hello")
     protected String hello() {
         websocketSender.send "/topic/hello", "hello from controller!"
+        websocketSender.send "/topic/salute", [to: 'grooscript', who: 'plugin']
+        websocketSender.send "/topic/list", [4, 2, 5, 8]
     }
 }
