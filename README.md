@@ -1,4 +1,4 @@
-Grooscript grails plugin 0.5
+Grooscript grails plugin 0.6
 ============================
 
 It requires Grails 2.4+, asset-pipeline and cache plugin.
