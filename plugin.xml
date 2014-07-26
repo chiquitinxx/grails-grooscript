@@ -1,4 +1,4 @@
-<plugin name='grooscript' version='0.6-SNAPSHOT' grailsVersion='2.4 &gt; *'>
+<plugin name='grooscript' version='0.6' grailsVersion='2.4 &gt; *'>
   <author>Jorge Franco</author>
   <authorEmail>grooscript@gmail.com</authorEmail>
   <title>Grails Grooscript Plugin</title>

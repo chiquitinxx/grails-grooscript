@@ -9,5 +9,7 @@ Use your groovy code in your gsp's, your code, converted to javascript, will run
 
 [Guide](http://grooscript.org/grails-plugin/rest-demo.html) to use Rest support.
 
+[Info](http://grooscript.org/grails-plugin/websocket-support.html) websocket support.
+
 [Grooscript](http://grooscript.org/)
 
