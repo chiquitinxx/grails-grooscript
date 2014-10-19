@@ -39,8 +39,9 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.grooscript:grooscript:0.5.2') {
+        compile ('org.grooscript:grooscript:0.6.2-SNAPSHOT') {
             exclude 'groovy'
+            exclude 'groovy-json'
             exclude 'gpars'
         }
         test 'cglib:cglib-nodep:2.2.2'
@@ -48,11 +49,11 @@ grails.project.dependency.resolution = {
 
     plugins {
 
-        compile ":asset-pipeline:1.9.3"
+        compile ":asset-pipeline:1.9.6"
         compile ":cache:1.1.7"
         compile ":spring-websocket:1.0.0"
 
-        runtime(":hibernate4:4.3.5.4") {
+        runtime(":hibernate4:4.3.5.5") {
             export = false
         }
 

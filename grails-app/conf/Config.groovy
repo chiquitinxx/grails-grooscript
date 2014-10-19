@@ -21,8 +21,6 @@ log4j = {
            'net.sf.ehcache.hibernate'
 }
 
-phantomjs.path = '/Applications/phantomjs'
-
 grails.mime.types = [ // the first one is the default format
     all:           '*/*', // 'all' maps to '*' or the first available format in withFormat
     atom:          'application/atom+xml',
@@ -38,6 +36,8 @@ grails.mime.types = [ // the first one is the default format
     hal:           ['application/hal+json','application/hal+xml'],
     xml:           ['text/xml', 'application/xml']
 ]
+
+phantomjs.path = '/Applications/phantomjs'
 
 grooscript {
     websockets = 'springWebsocketPlugin'

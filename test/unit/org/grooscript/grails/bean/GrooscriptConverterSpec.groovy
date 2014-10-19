@@ -42,9 +42,8 @@ class GrooscriptConverterSpec extends Specification {
         1 * GrooScript.clearAllOptions()
         1 * GrooScript.setConversionProperty('classPath', ['src/groovy'])
         1 * GrooScript.setConversionProperty('mainContextScope', GrooscriptConverter.DEFAULT_CONVERSION_SCOPE_VARS)
+        0 * GrooScript.setConversionProperty(_)
         1 * GrooScript.convert(CODE)
-        1 * GrooScript.getNewConverter()
-        0 * _
         result == 'var a = 5;\ngs.mc(b,"go",[]);\n'
     }
 
@@ -111,8 +110,8 @@ class GrooscriptConverterSpec extends Specification {
         1 * Util.getDomainFileText(DOMAIN_CLASS, grailsApplication) >> CODE
         1 * Util.addCustomizationAstOption(DomainClass)
         1 * GrooScript.setConversionProperty('customization', _)
+        0 * GrooScript.setConversionProperty(_)
         1 * GrooScript.convert(CODE) >> JS
-        0 * _
         result == JS
     }
 
@@ -128,8 +127,8 @@ class GrooscriptConverterSpec extends Specification {
         1 * Util.getDomainFileText(DOMAIN_CLASS, grailsApplication) >> CODE
         1 * Util.addCustomizationAstOption(RemoteDomainClass)
         1 * GrooScript.setConversionProperty('customization', _)
+        0 * GrooScript.setConversionProperty(_)
         1 * GrooScript.convert(CODE) >> JS
-        0 * _
         result == JS
     }
 }

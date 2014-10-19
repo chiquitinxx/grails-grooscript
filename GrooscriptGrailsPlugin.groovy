@@ -7,7 +7,7 @@ import org.grooscript.grails.websocket.SpringWebsocketPlugin
 import static org.grooscript.grails.util.Util.consoleMessage
 
 class GrooscriptGrailsPlugin {
-    def version = "0.6"
+    def version = "0.7-SNAPSHOT"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
         "grails-app/assets/javascripts/app/**",
@@ -21,7 +21,7 @@ class GrooscriptGrailsPlugin {
         "web-app/js/**"
     ]
 
-    def title = "Grails Grooscript Plugin"
+    def title = "Grooscript Plugin"
     def author = "Jorge Franco"
     def authorEmail = "grooscript@gmail.com"
     def description = '''\

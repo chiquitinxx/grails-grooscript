@@ -12,42 +12,42 @@ class TagsPhantomTest extends GroovyTestCase {
         assert true
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin')
     void testBookActions() {
         assert $('#bookList li').size() > 0, 'Number of books is ' + $('#bookList li').size()
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin')
     void testApplicationUp() {
         assert $('title').text() == 'Grooscript plugin'
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin')
     void testBasicTemplate() {
         assert $('.tools').size() == 3
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin', waitSeconds = 1)
     void testTemplateWithEventAtStart() {
         assert $('#lastEvent').text() == 'New event: Application started.', 'Last event is: ' + $('#lastEvent').text()
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin', waitSeconds = 1)
     void testDeleteBook() {
         assert $('#deleteEvent').text() == 'Deleted Gray', 'Delete event is: ' + $('#deleteEvent').text()
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin', waitSeconds = 1)
     void testModelActors() {
         assert $('#actorList li').size() == 1, 'Number of actors is ' + $('#actorList li').size()
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript')
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin')
     void testDaemonConversion() {
         assert $('h4').text() == 'The end!', 'h4 is ' + $('h4').text()
     }
 
-    @PhantomJsTest(url = 'http://localhost:8080/grooscript', waitSeconds = 1)
+    @PhantomJsTest(url = 'http://localhost:8080/grooscript-plugin', waitSeconds = 1)
     void testOnScriptTag() {
         assert $('#customReadEvent').text() == 'Data event: Application ready.', 'Data event is: ' + $('#customReadEvent').text()
     }
