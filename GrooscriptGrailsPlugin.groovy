@@ -7,7 +7,7 @@ import org.grooscript.grails.websocket.SpringWebsocketPlugin
 import static org.grooscript.grails.util.Util.consoleMessage
 
 class GrooscriptGrailsPlugin {
-    def version = "0.7-SNAPSHOT"
+    def version = "0.7"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
         "grails-app/assets/javascripts/app/**",
@@ -40,10 +40,6 @@ It converts the code to javascript and your groovy code will run in the browser.
     def issueManagement = [ system: "GITHUB", url: "https://github.com/chiquitinxx/grails-grooscript/issues" ]
 
     def scm = [ url: "http://github.com/chiquitinxx/grails-grooscript/" ]
-
-    def doWithWebDescriptor = { xml ->
-        // TODO Implement additions to web.xml (optional), this event occurs before
-    }
 
     def doWithSpring = {
         grooscriptConverter(GrooscriptConverter) {
