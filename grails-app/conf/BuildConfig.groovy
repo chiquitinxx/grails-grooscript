@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsCentral()
-        //mavenLocal()
+        mavenLocal()
         mavenCentral()
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
@@ -39,7 +39,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.grooscript:grooscript:0.6.2') {
+        compile ('org.grooscript:grooscript:1.0-SNAPSHOT') {
             exclude 'groovy'
             exclude 'groovy-json'
             exclude 'gpars'
@@ -49,9 +49,11 @@ grails.project.dependency.resolution = {
 
     plugins {
 
-        compile ":asset-pipeline:1.9.6"
-        compile ":cache:1.1.7"
-        compile ":spring-websocket:1.0.0"
+        compile(":asset-pipeline:1.9.6",
+                ":cache:1.1.7",
+                ":spring-websocket:1.0.0") {
+            export = false
+        }
 
         runtime(":hibernate4:4.3.6.1") {
             export = false

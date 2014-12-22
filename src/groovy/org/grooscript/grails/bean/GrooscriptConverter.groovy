@@ -41,26 +41,6 @@ class GrooscriptConverter {
         jsCode
     }
 
-    void startDaemon(Map daemonConfig = [:]) {
-
-        stopDaemon()
-
-        def source = daemonConfig.source
-        def destination = daemonConfig.destination
-        def conversionOptions = addDefaultOptions(daemonConfig.conversionOptions)
-
-        conversionDaemon = GrooScript.startConversionDaemon(source, destination, conversionOptions,
-                closureToRunAfterDaemonConversion(daemonConfig.doAfter))
-    }
-
-    void stopDaemon() {
-        if (conversionDaemon) {
-            consoleMessage 'Stopping old conversion daemon.'
-            conversionDaemon.stop()
-            sleep(1000)
-        }
-    }
-
     String convertDomainClass(String domainClassName) {
         convertDomainClassFile(domainClassName, false)
     }
@@ -74,21 +54,6 @@ class GrooscriptConverter {
         options = addGroovySourceClassPathIfNeeded(options)
         options = addScopeVars(options)
         options
-    }
-
-    private Closure closureToRunAfterDaemonConversion(Closure doAfter) {
-
-        //Config option to do
-        def doAfterDaemonConversion = doAfter
-
-        //Full action to do after some change
-        Closure doAfterDaemon = null
-        if (doAfterDaemonConversion) {
-            doAfterDaemon = { listFilesList ->
-                doAfterDaemonConversion(listFilesList)
-            }
-        }
-        doAfterDaemon
     }
 
     private addScopeVars(options) {
