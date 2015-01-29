@@ -1,5 +1,5 @@
 @GrabConfig(systemClassLoader=true)
-@Grab('org.grooscript:grooscript:1.0-SNAPSHOT')
+@Grab('org.grooscript:grooscript:1.0.0')
 
 import org.grooscript.GrooScript
 import org.grooscript.convert.ConversionOptions

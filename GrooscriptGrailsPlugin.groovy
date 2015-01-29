@@ -3,7 +3,7 @@ import org.grooscript.grails.util.GrooscriptTemplate
 import org.grooscript.grails.websocket.SpringWebsocketPlugin
 
 class GrooscriptGrailsPlugin {
-    def version = "0.7"
+    def version = "1.0-SNAPSHOT"
     def grailsVersion = "2.4 > *"
     def pluginExcludes = [
         "grails-app/assets/javascripts/app/**",

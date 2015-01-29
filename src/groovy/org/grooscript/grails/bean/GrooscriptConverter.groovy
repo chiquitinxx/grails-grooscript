@@ -3,7 +3,6 @@ package org.grooscript.grails.bean
 import grails.plugin.cache.Cacheable
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.grooscript.GrooScript
-import org.grooscript.daemon.ConversionDaemon
 import org.grooscript.grails.domain.DomainClass
 import org.grooscript.grails.remote.RemoteDomainClass
 import org.grooscript.grails.util.Util
@@ -16,7 +15,6 @@ import static org.grooscript.grails.util.Util.*
  */
 class GrooscriptConverter {
 
-    ConversionDaemon conversionDaemon
     GrailsApplication grailsApplication
 
     static final DEFAULT_CONVERSION_SCOPE_VARS = ['$', 'gsEvents', 'window', 'document']
@@ -86,16 +84,15 @@ class GrooscriptConverter {
                 try {
                     GrooScript.clearAllOptions()
                     Util.addCustomizationAstOption(remote ? RemoteDomainClass : DomainClass)
-                    //GrooScript.setConversionProperty('classPath', [GROOVY_SOURCE_CODE, GRAILS_DOMAIN_CLASSES])
                     result = GrooScript.convert(domainFileText)
                 } catch (e) {
-                    consoleError 'Error converting ' + e.message
+                    consoleError "Error converting domain class file ${domainClassName}: ${e.message}"
                 }
             } else {
-                consoleWarning 'Domain file not found ' + domainClassName
+                consoleWarning "Domain file not found ${domainClassName}"
             }
         } catch (e) {
-            consoleError 'GrooscriptConverter Error creating domain class js file ' + e.message
+            consoleError "Exception converting domain class (${domainClassName}) file: ${e.message}"
         }
         result
     }

@@ -41,15 +41,4 @@ phantomjs.path = '/Applications/phantomjs'
 
 grooscript {
     websockets = 'springWebsocketPlugin'
-    daemon {
-        source = ['src/groovy/MyScript.groovy']
-        destination = 'grails-app/assets/javascripts/app'
-        conversionOptions {
-            initialText = '//Converted'
-        }
-        doAfter = { list ->
-            if (list)
-                println "************ Converted files: ${list}"
-        }
-    }
 }
