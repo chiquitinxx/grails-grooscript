@@ -1,7 +1,7 @@
-<plugin name='grooscript' version='0.6' grailsVersion='2.4 &gt; *'>
+<plugin name='grooscript' version='0.8' grailsVersion='2.4 &gt; *'>
   <author>Jorge Franco</author>
   <authorEmail>grooscript@gmail.com</authorEmail>
-  <title>Grails Grooscript Plugin</title>
+  <title>Grooscript Plugin</title>
   <description>Use grooscript to work in the client side with your groovy code.
 It converts the code to javascript and your groovy code will run in the browser.
 </description>
