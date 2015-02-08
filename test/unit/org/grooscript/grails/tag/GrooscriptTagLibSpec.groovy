@@ -62,28 +62,6 @@ class GrooscriptTagLibSpec extends Specification {
         0 * _
     }
 
-    /*static final FILE_PATH = 'GrooscriptGrailsPlugin.groovy'
-
-    void 'test code taglib with a file'() {
-        when:
-        applyTemplate("<grooscript:code filePath='${FILE_PATH}'/>")
-
-        then:
-        1 * grooscriptConverter.toJavascript(new File(FILE_PATH).text, null) >> JS_CODE
-        1 * assetsTagLib.script(['type':'text/javascript'], { it() == JS_CODE})
-        0 * _
-    }
-
-    void 'test code taglib with a file and body'() {
-        when:
-        applyTemplate("<grooscript:code filePath='${FILE_PATH}'>${GROOVY_CODE}</grooscript:code>")
-
-        then:
-        1 * grooscriptConverter.toJavascript(new File(FILE_PATH).text+'\n'+GROOVY_CODE, null) >> JS_CODE
-        1 * assetsTagLib.script(['type':'text/javascript'], { it() == JS_CODE})
-        0 * _
-    }*/
-
     void 'test basic template'() {
         given:
         GroovySpy(Util, global: true)
@@ -171,20 +149,6 @@ class GrooscriptTagLibSpec extends Specification {
         })
         result == ''
     }
-
-    /*static final FILE_PATH_TEMPLATE = 'src/groovy/MyTemplate.groovy'
-
-    void 'test template with a file'() {
-        when:
-        def result = applyTemplate("<grooscript:template filePath='${FILE_PATH_TEMPLATE}'/>")
-
-        then:
-        2 * resourceTaglib.script(_)
-        1 * grooscriptConverter.toJavascript("def gsTextHtml = { data -> Builder.process { -> ${new File(FILE_PATH_TEMPLATE).text}}}") >> ''
-        2 * resourceTaglib.require(_)
-        0 * _
-        result.startsWith "\n<div id='fTemplate"
-    }*/
 
     static final FAKE_NAME = 'FAKE'
     static final DOMAIN_CLASS_NAME = 'correctDomainClass'

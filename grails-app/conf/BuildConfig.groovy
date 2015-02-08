@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsCentral()
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
@@ -48,7 +48,6 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-
         compile(":asset-pipeline:1.9.6",
                 ":cache:1.1.7",
                 ":spring-websocket:1.0.0") {

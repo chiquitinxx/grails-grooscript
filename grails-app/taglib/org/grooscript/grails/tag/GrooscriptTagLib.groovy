@@ -25,18 +25,6 @@ class GrooscriptTagLib {
      */
     def code = { attrs, body ->
         def script
-        /*if (attrs.filePath) {
-            try {
-                script = new File(attrs.filePath).text
-                if (body()) {
-                    script += '\n' + body()
-                }
-            } catch (e) {
-                consoleError "${namespace}.code error reading file('${attrs.filePath}'): ${e.message}", e
-            }
-        } else {
-            script = body()
-        }*/
         script = body()
         if (script) {
             def jsCode = grooscriptConverter.toJavascript(script.toString(), attrs.conversionOptions)
@@ -56,15 +44,6 @@ class GrooscriptTagLib {
      */
     def template = { attrs, body ->
         def script
-        /*if (attrs.filePath) {
-            try {
-                script = new File(attrs.filePath).text
-            } catch (e) {
-                consoleError "GrooScriptVertxTagLib.template error reading file('${attrs.filePath}'): ${e.message}", e
-            }
-        } else {
-            script = body()
-        }*/
         script = body()
         if (script) {
             def functionName = attrs.functionName ?: newTemplateName
@@ -118,6 +97,63 @@ class GrooscriptTagLib {
         }
     }
 
+    /**
+     * grooscript:onEvent
+     * name - name of the event
+     */
+    def onEvent = { attrs, body ->
+        String name = attrs.name
+        if (name) {
+            initGrooscriptGrails()
+
+            def script = body()
+            def jsCode = grooscriptConverter.toJavascript("{ event -> ${script}}").trim()
+
+            asset.script(type: 'text/javascript') {
+                grooscriptTemplate.apply(Templates.ON_EVENT_TAG,
+                        [jsCode: removeLastSemicolon(jsCode), nameEvent: name])
+            }
+
+        } else {
+            consoleError 'GrooscriptTagLib onEvent need define name property'
+        }
+    }
+
+    /**
+     * grooscript:initSpringWebsocket
+     */
+    def initSpringWebsocket = { attrs, body ->
+
+        def script = body()
+        def jsCode = ''
+        if (script) {
+            jsCode = grooscriptConverter.toJavascript(script)
+        }
+        def url = createLink(uri: '/stomp')
+        asset.script(type: 'text/javascript') {
+            grooscriptTemplate.apply(Templates.SPRING_WEBSOCKET, [url: url, jsCode: jsCode])
+        }
+    }
+
+    /**
+     * grooscript:onServerEvent
+     */
+    def onServerEvent = { attrs, body ->
+
+        def script = body()
+        def jsCode = ''
+        if (script) {
+            jsCode = grooscriptConverter.toJavascript(
+                    grooscriptTemplate.apply(Templates.ON_SERVER_EVENT_RUN, [code: script]))
+        }
+        asset.script(type: 'text/javascript') {
+            grooscriptTemplate.apply(Templates.ON_SERVER_EVENT,
+                    [jsCode: jsCode, path: attrs.path,
+                     functionName: onServerEventFunctionName,
+                     type: attrs.type ?: 'null'])
+        }
+    }
+
     private initGrooscriptGrails() {
         def urlSetted = request.getAttribute(REMOTE_URL_SETTED)
         if (!urlSetted) {
@@ -161,57 +197,6 @@ class GrooscriptTagLib {
 
     private boolean existDomainClass(String nameClass) {
         grailsApplication.domainClasses.find { it.fullName == nameClass || it.name == nameClass }
-    }
-
-    /**
-     * grooscript:onEvent
-     * name - name of the event
-     */
-    def onEvent = { attrs, body ->
-        String name = attrs.name
-        if (name) {
-            initGrooscriptGrails()
-
-            def script = body()
-            def jsCode = grooscriptConverter.toJavascript("{ event -> ${script}}").trim()
-
-            asset.script(type: 'text/javascript') {
-                grooscriptTemplate.apply(Templates.ON_EVENT_TAG,
-                        [jsCode: removeLastSemicolon(jsCode), nameEvent: name])
-            }
-
-        } else {
-            consoleError 'GrooscriptTagLib onEvent need define name property'
-        }
-    }
-
-    def initSpringWebsocket = { attrs, body ->
-
-        def script = body()
-        def jsCode = ''
-        if (script) {
-            jsCode = grooscriptConverter.toJavascript(script)
-        }
-        def url = createLink(uri: '/stomp')
-        asset.script(type: 'text/javascript') {
-            grooscriptTemplate.apply(Templates.SPRING_WEBSOCKET, [url: url, jsCode: jsCode])
-        }
-    }
-
-    def onServerEvent = { attrs, body ->
-
-        def script = body()
-        def jsCode = ''
-        if (script) {
-            jsCode = grooscriptConverter.toJavascript(
-                    grooscriptTemplate.apply(Templates.ON_SERVER_EVENT_RUN, [code: script]))
-        }
-        asset.script(type: 'text/javascript') {
-            grooscriptTemplate.apply(Templates.ON_SERVER_EVENT,
-                    [jsCode: jsCode, path: attrs.path,
-                     functionName: onServerEventFunctionName,
-                     type: attrs.type ?: 'null'])
-        }
     }
 
     private removeLastSemicolon(String code) {
